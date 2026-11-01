@@ -62,11 +62,18 @@ describe('AppService filters', () => {
     query
       .mockResolvedValueOnce([{ id: 5 }])
       .mockResolvedValueOnce([{ id: 12, empresa: 5 }])
-      .mockResolvedValueOnce([{ alunoId: 3 }, { alunoId: 9 }]);
+      .mockResolvedValueOnce([
+        { candidaturaId: 101, alunoId: 3, aceito: null },
+        { candidaturaId: 102, alunoId: 9, aceito: 1 },
+      ]);
 
     await expect(appService.getApplications({ userId: 22, tipo: 'empresa' }, 12)).resolves.toEqual({
       vagaId: 12,
       alunosIds: [3, 9],
+      candidaturas: [
+        { id: 101, alunoId: 3, aceito: null },
+        { id: 102, alunoId: 9, aceito: true },
+      ],
     });
   });
 });

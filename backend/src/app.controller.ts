@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -19,7 +20,9 @@ import {
   RegisterCompanyDto,
   RegisterInstitutionDto,
   RegisterStudentDto,
+  UpdateApplicationStatusDto,
   UpdateUserDto,
+  UpdateVacancyDto,
 } from './auth.dto.js';
 
 @Controller('api')
@@ -150,15 +153,47 @@ export class AppController {
     return this.appService.createVacancy(user, body);
   }
 
+  @Patch('vagas/:id')
+  @Roles('empresa')
+  updateVacancy(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: UpdateVacancyDto,
+  ) {
+    return this.appService.updateVacancy(user, id, body);
+  }
+
+  @Delete('vagas/:id')
+  @Roles('empresa')
+  deleteVacancy(@CurrentUser() user: AuthenticatedUser, @Param('id', ParseIntPipe) id: number) {
+    return this.appService.deleteVacancy(user, id);
+  }
+
   @Post('candidatar/:id')
   @Roles('aluno')
   applyToVacancy(@CurrentUser() user: AuthenticatedUser, @Param('id', ParseIntPipe) id: number) {
     return this.appService.applyToVacancy(user, id);
   }
 
+  @Get('minhas-candidaturas')
+  @Roles('aluno')
+  getMyApplications(@CurrentUser() user: AuthenticatedUser) {
+    return this.appService.getMyApplications(user);
+  }
+
   @Get('candidaturas/:id')
   @Roles('empresa')
   getApplications(@CurrentUser() user: AuthenticatedUser, @Param('id', ParseIntPipe) id: number) {
     return this.appService.getApplications(user, id);
+  }
+
+  @Patch('candidaturas/:id/status')
+  @Roles('empresa')
+  updateApplicationStatus(
+    @CurrentUser() user: AuthenticatedUser,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: UpdateApplicationStatusDto,
+  ) {
+    return this.appService.updateApplicationStatus(user, id, body);
   }
 }
