@@ -8,7 +8,13 @@ import {
 import type { ResultSetHeader, RowDataPacket } from 'mysql2';
 import type { PoolConnection } from 'mysql2/promise';
 import type { AuthenticatedUser } from './auth.decorator.js';
-import type { AccountType, CreateVacancyDto, UpdateUserDto } from './auth.dto.js';
+import type {
+  AccountType,
+  CreateVacancyDto,
+  UpdateApplicationStatusDto,
+  UpdateUserDto,
+  UpdateVacancyDto,
+} from './auth.dto.js';
 import { DatabaseService } from './database.service.js';
 
 @Injectable()
@@ -28,7 +34,9 @@ export class AppService {
         'POST /api/cadastro/aluno', 'POST /api/cadastro/empresa', 'POST /api/cadastro/instituicao',
         'POST /api/login/aluno', 'POST /api/login/empresa', 'POST /api/login/instituicao',
         'GET /api/usuario', 'PATCH /api/usuario', 'POST /api/vagas',
-        'POST /api/candidatar/:id', 'GET /api/candidaturas/:id',
+        'PATCH /api/vagas/:id', 'DELETE /api/vagas/:id',
+        'POST /api/candidatar/:id', 'GET /api/minhas-candidaturas',
+        'GET /api/candidaturas/:id', 'PATCH /api/candidaturas/:id/status',
       ],
     };
   }
@@ -226,6 +234,78 @@ export class AppService {
     return this.getVaga(vacancyId);
   }
 
+  async updateVacancy(user: AuthenticatedUser, vacancyId: number, dto: UpdateVacancyDto) {
+    const fieldMap: Record<string, string> = {
+      tipo: 'tipo',
+      descricao: 'descricao',
+      salario: 'salario',
+      numeroDeVagas: 'numero_de_vagas',
+    };
+    const updates = Object.entries(fieldMap)
+      .filter(([field]) => dto[field as keyof UpdateVacancyDto] !== undefined)
+      .map(([field, column]) => [column, dto[field as keyof UpdateVacancyDto]] as const);
+
+    await this.database.transaction(async (connection) => {
+      const [rows] = await connection.query<RowDataPacket[]>(
+        'SELECT empresa, horario_inicio AS horarioInicio, horario_termino AS horarioTermino FROM vagas WHERE id = ? FOR UPDATE',
+        [vacancyId],
+      );
+      const vaga = rows[0];
+      if (!vaga) throw new NotFoundException('Vaga não encontrada.');
+      const companyId = await this.transactionProfileId(connection, 'empresas', user.userId);
+      if (!companyId || Number(vaga.empresa) !== companyId) {
+        throw new ForbiddenException('A vaga não pertence à empresa autenticada.');
+      }
+
+      const horarioInicio = dto.horarioInicio ?? String(vaga.horarioInicio);
+      const horarioTermino = dto.horarioTermino ?? String(vaga.horarioTermino);
+      if ((dto.horarioInicio || dto.horarioTermino) && horarioTermino <= horarioInicio) {
+        throw new BadRequestException('O horário de término deve ser posterior ao horário de início.');
+      }
+      if (dto.horarioInicio !== undefined) updates.push(['horario_inicio', dto.horarioInicio]);
+      if (dto.horarioTermino !== undefined) updates.push(['horario_termino', dto.horarioTermino]);
+
+      if (updates.length === 0 && dto.tags === undefined) {
+        throw new BadRequestException('Informe pelo menos um campo para atualizar.');
+      }
+      if (dto.tags?.length) await this.assertTagsExist(connection, dto.tags);
+
+      if (updates.length > 0) {
+        const assignments = updates.map(([column]) => `\`${column}\` = ?`).join(', ');
+        await connection.query<ResultSetHeader>(
+          `UPDATE vagas SET ${assignments} WHERE id = ?`,
+          [...updates.map(([, value]) => value), vacancyId],
+        );
+      }
+      if (dto.tags !== undefined) {
+        await connection.execute('DELETE FROM tags_x_vagas WHERE vaga = ?', [vacancyId]);
+        for (const tagId of dto.tags) {
+          await connection.execute('INSERT INTO tags_x_vagas (tag, vaga) VALUES (?, ?)', [tagId, vacancyId]);
+        }
+      }
+    });
+    return this.getVaga(vacancyId);
+  }
+
+  async deleteVacancy(user: AuthenticatedUser, vacancyId: number) {
+    return this.database.transaction(async (connection) => {
+      const [rows] = await connection.query<RowDataPacket[]>(
+        'SELECT empresa FROM vagas WHERE id = ? FOR UPDATE',
+        [vacancyId],
+      );
+      const vaga = rows[0];
+      if (!vaga) throw new NotFoundException('Vaga não encontrada.');
+      const companyId = await this.transactionProfileId(connection, 'empresas', user.userId);
+      if (!companyId || Number(vaga.empresa) !== companyId) {
+        throw new ForbiddenException('A vaga não pertence à empresa autenticada.');
+      }
+      await connection.execute('DELETE FROM tags_x_vagas WHERE vaga = ?', [vacancyId]);
+      await connection.execute('DELETE FROM candidaturas WHERE vaga = ?', [vacancyId]);
+      await connection.execute('DELETE FROM vagas WHERE id = ?', [vacancyId]);
+      return { id: vacancyId };
+    });
+  }
+
   async applyToVacancy(user: AuthenticatedUser, vacancyId: number) {
     try {
       return await this.database.transaction(async (connection) => {
@@ -264,11 +344,63 @@ export class AppService {
       throw new ForbiddenException('A vaga não pertence à empresa autenticada.');
     }
     const rows = await this.database.query<RowDataPacket[]>(
-      `SELECT a.id AS alunoId FROM candidaturas c
+      `SELECT c.id AS candidaturaId, a.id AS alunoId, c.aceito FROM candidaturas c
        JOIN alunos a ON a.id = c.aluno WHERE c.vaga = ? ORDER BY a.id`,
       [vacancyId],
     );
-    return { vagaId: vacancyId, alunosIds: rows.map((row: RowDataPacket) => Number(row.alunoId)) };
+    return {
+      vagaId: vacancyId,
+      alunosIds: rows.map((row: RowDataPacket) => Number(row.alunoId)),
+      candidaturas: rows.map((row: RowDataPacket) => ({
+        id: Number(row.candidaturaId),
+        alunoId: Number(row.alunoId),
+        aceito: row.aceito === null ? null : Boolean(row.aceito),
+      })),
+    };
+  }
+
+  async getMyApplications(user: AuthenticatedUser) {
+    const studentId = await this.profileId(this.database, 'alunos', user.userId);
+    if (!studentId) throw new NotFoundException('Perfil do aluno não encontrado.');
+    return this.rows(
+      `SELECT c.id, c.aceito,
+              JSON_OBJECT('id', v.id, 'tipo', v.tipo, 'salario', v.salario,
+                          'horarioInicio', v.horario_inicio, 'horarioTermino', v.horario_termino) AS vaga,
+              JSON_OBJECT('id', e.id, 'nome', u.nome) AS empresa
+       FROM candidaturas c
+       JOIN vagas v ON v.id = c.vaga
+       JOIN empresas e ON e.id = v.empresa
+       JOIN usuarios u ON u.id = e.usuario
+       WHERE c.aluno = ?
+       ORDER BY c.id DESC`,
+      [studentId],
+    );
+  }
+
+  async updateApplicationStatus(user: AuthenticatedUser, applicationId: number, dto: UpdateApplicationStatusDto) {
+    return this.database.transaction(async (connection) => {
+      const [rows] = await connection.query<RowDataPacket[]>(
+        `SELECT c.id, c.aluno, c.vaga, v.empresa FROM candidaturas c
+         JOIN vagas v ON v.id = c.vaga WHERE c.id = ? FOR UPDATE`,
+        [applicationId],
+      );
+      const application = rows[0];
+      if (!application) throw new NotFoundException('Candidatura não encontrada.');
+      const companyId = await this.transactionProfileId(connection, 'empresas', user.userId);
+      if (!companyId || Number(application.empresa) !== companyId) {
+        throw new ForbiddenException('A candidatura não pertence a uma vaga da empresa autenticada.');
+      }
+      await connection.execute<ResultSetHeader>(
+        'UPDATE candidaturas SET aceito = ? WHERE id = ?',
+        [dto.aceito, applicationId],
+      );
+      return {
+        id: applicationId,
+        vagaId: Number(application.vaga),
+        alunoId: Number(application.aluno),
+        aceito: dto.aceito,
+      };
+    });
   }
 
   private async validateProfileReferences(

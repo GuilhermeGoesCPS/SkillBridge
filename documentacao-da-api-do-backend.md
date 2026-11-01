@@ -212,6 +212,25 @@ Cria uma vaga associada à empresa autenticada. Permitido somente para contas do
 
 Resposta: `201 Created`, com a vaga criada e associada à empresa autenticada.
 
+#### `PATCH /api/vagas/{id}`
+
+Atualiza a vaga identificada por `{id}`. Permitido somente para a empresa proprietária da vaga. Envie apenas os campos que deseja alterar, entre `tipo`, `descricao`, `salario`, `horarioInicio`, `horarioTermino`, `numeroDeVagas` e `tags`. Ao enviar `tags`, a lista substitui por completo as tags associadas à vaga (envie `[]` para remover todas).
+
+```json
+{
+  "salario": 1600.00,
+  "horarioTermino": "16:00:00"
+}
+```
+
+Resposta: `200 OK`, com a vaga atualizada no mesmo formato de `GET /api/vagas/{id}`. Um corpo sem nenhum campo retorna `400 Bad Request`; um horário de término anterior ou igual ao de início (considerando o valor já salvo quando apenas um dos dois é enviado) também retorna `400 Bad Request`. Uma vaga inexistente retorna `404 Not Found`; uma vaga de outra empresa retorna `403 Forbidden`.
+
+#### `DELETE /api/vagas/{id}`
+
+Remove a vaga identificada por `{id}`, junto com suas tags e candidaturas associadas. Permitido somente para a empresa proprietária da vaga.
+
+Resposta: `200 OK`, com `{ "id": <id da vaga removida> }`. Uma vaga inexistente retorna `404 Not Found`; uma vaga de outra empresa retorna `403 Forbidden`.
+
 ### Candidaturas
 
 #### `POST /api/candidatar/{id}`
@@ -220,20 +239,56 @@ Candidata o aluno autenticado à vaga identificada por `{id}`. Permitido somente
 
 Resposta: `201 Created`, com a confirmação e os IDs da candidatura e da vaga. Se o aluno já estiver inscrito nessa vaga, retorna `409 Conflict`.
 
+#### `GET /api/minhas-candidaturas`
+
+Retorna as candidaturas do aluno autenticado, com os dados básicos de cada vaga e da empresa. Permitido somente para contas do tipo `aluno`. Não recebe parâmetros: a identidade do aluno é obtida pelo token.
+
+Resposta: `200 OK`.
+
+```json
+[
+  {
+    "id": 1,
+    "aceito": null,
+    "vaga": { "id": 1, "tipo": "Estágio", "salario": 1200.00, "horarioInicio": "13:00:00", "horarioTermino": "18:00:00" },
+    "empresa": { "id": 1, "nome": "SkillBridge Tecnologia Ltda" }
+  }
+]
+```
+
+O campo `aceito` é `null` enquanto a empresa não decidiu, `true` se aceita ou `false` se recusada. Os campos `vaga` e `empresa` podem chegar como texto JSON (mesmo comportamento de outros campos compostos da API) e devem ser decodificados pelo cliente quando necessário.
+
 #### `GET /api/candidaturas/{id}`
 
-Retorna os IDs dos alunos que se candidataram à vaga identificada por `{id}`. Permitido somente para contas do tipo `empresa` e para a empresa proprietária da vaga.
+Retorna os IDs dos alunos que se candidataram à vaga identificada por `{id}`, e os dados de cada candidatura. Permitido somente para contas do tipo `empresa` e para a empresa proprietária da vaga.
 
 Resposta: `200 OK`.
 
 ```json
 {
   "vagaId": 12,
-  "alunosIds": [4, 7, 9]
+  "alunosIds": [4, 7, 9],
+  "candidaturas": [
+    { "id": 101, "alunoId": 4, "aceito": null },
+    { "id": 102, "alunoId": 7, "aceito": true },
+    { "id": 103, "alunoId": 9, "aceito": false }
+  ]
 }
 ```
 
-Se não houver candidaturas, `alunosIds` será uma lista vazia. Uma vaga inexistente retorna `404 Not Found`; uma tentativa de consultar vaga de outra empresa retorna `403 Forbidden`.
+Se não houver candidaturas, `alunosIds` e `candidaturas` serão listas vazias. Uma vaga inexistente retorna `404 Not Found`; uma tentativa de consultar vaga de outra empresa retorna `403 Forbidden`.
+
+#### `PATCH /api/candidaturas/{candidaturaId}/status`
+
+Aceita ou recusa a candidatura identificada por `{candidaturaId}`, usando o `id` retornado em `candidaturas` por `GET /api/candidaturas/{id}`. Permitido somente para a empresa proprietária da vaga da candidatura.
+
+```json
+{
+  "aceito": true
+}
+```
+
+Resposta: `200 OK`, com `{ "id", "vagaId", "alunoId", "aceito" }`. Uma candidatura inexistente retorna `404 Not Found`; uma candidatura de uma vaga de outra empresa retorna `403 Forbidden`.
 
 ## Códigos de resposta
 

@@ -1,6 +1,7 @@
 import {
   ArrayUnique,
   IsArray,
+  IsBoolean,
   IsEmail,
   IsInt,
   IsNumber,
@@ -167,4 +168,49 @@ export class CreateVacancyDto {
   @IsInt({ each: true })
   @Min(1, { each: true })
   tags?: number[];
+}
+
+export class UpdateVacancyDto {
+  @IsOptional()
+  @IsString()
+  @MinLength(1)
+  @MaxLength(20)
+  tipo?: string;
+
+  @IsOptional()
+  @IsString()
+  descricao?: string;
+
+  @IsOptional()
+  @IsNumber({ maxDecimalPlaces: 2 })
+  @Min(0)
+  @Max(999999999.99)
+  salario?: number;
+
+  @IsOptional()
+  @IsString()
+  @Matches(/^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/)
+  horarioInicio?: string;
+
+  @IsOptional()
+  @IsString()
+  @Matches(/^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/)
+  horarioTermino?: string;
+
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  numeroDeVagas?: number;
+
+  @IsOptional()
+  @IsArray()
+  @ArrayUnique()
+  @IsInt({ each: true })
+  @Min(1, { each: true })
+  tags?: number[];
+}
+
+export class UpdateApplicationStatusDto {
+  @IsBoolean()
+  aceito!: boolean;
 }

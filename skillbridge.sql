@@ -1,3 +1,5 @@
+-- manter sincronizado com database/schema.sql
+
 create table if not exists usuarios(
     id int primary key auto_increment,
     nome varchar(50) not null,
