@@ -65,6 +65,43 @@ export interface StudentResult {
   tags: Tag[] | string;
 }
 
+export interface InstitutionStudent {
+  id: number;
+  nome: string;
+  ra: string;
+  periodo: string;
+  contato?: string | null;
+  curso: { id: number; nome: string } | string;
+}
+
+export interface InstitutionAcceptedApplication {
+  id: number;
+  aceito: boolean;
+  aluno: { id: number; nome: string; ra: string; periodo: string } | string;
+  vaga: { id: number; tipo: string; salario: number | string; horarioInicio: string; horarioTermino: string } | string;
+  empresa: { id: number; nome: string } | string;
+}
+
+export interface ApplicationCandidate {
+  id: number;
+  alunoId: number;
+  aceito: boolean | number | null;
+  aluno: {
+    id: number;
+    nome: string;
+    curso: { id: number; nome: string } | string;
+    periodo: string;
+    instituicao: { id: number; nome: string } | string;
+    contato: string;
+  } | string;
+}
+
+export interface VacancyApplications {
+  vagaId: number;
+  alunosIds: number[];
+  candidaturas: ApplicationCandidate[];
+}
+
 const apiBase = (import.meta.env.VITE_API_URL || "http://localhost:3000/api").replace(/\/$/, "");
 const sessionKey = "skillbridge.session";
 const sessionEvent = "skillbridge:session-change";
