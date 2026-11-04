@@ -37,6 +37,8 @@ export class AppService {
         'PATCH /api/vagas/:id', 'DELETE /api/vagas/:id',
         'POST /api/candidatar/:id', 'GET /api/minhas-candidaturas',
         'GET /api/candidaturas/:id', 'PATCH /api/candidaturas/:id/status',
+        'GET /api/instituicao/alunos', 'GET /api/instituicao/alunos?curso=1,2',
+        'GET /api/instituicao/candidaturas',
       ],
     };
   }
@@ -344,8 +346,17 @@ export class AppService {
       throw new ForbiddenException('A vaga não pertence à empresa autenticada.');
     }
     const rows = await this.database.query<RowDataPacket[]>(
-      `SELECT c.id AS candidaturaId, a.id AS alunoId, c.aceito FROM candidaturas c
-       JOIN alunos a ON a.id = c.aluno WHERE c.vaga = ? ORDER BY a.id`,
+      `SELECT c.id AS candidaturaId, a.id AS alunoId, c.aceito,
+              u.nome AS alunoNome, u.contato AS alunoContato, a.periodo AS alunoPeriodo,
+              JSON_OBJECT('id', cur.id, 'nome', cur.nome) AS alunoCurso,
+              JSON_OBJECT('id', i.id, 'nome', iu.nome) AS alunoInstituicao
+       FROM candidaturas c
+       JOIN alunos a ON a.id = c.aluno
+       JOIN usuarios u ON u.id = a.usuario
+       JOIN cursos cur ON cur.id = a.curso
+       JOIN instituicoes i ON i.id = a.instituicao
+       JOIN usuarios iu ON iu.id = i.usuario
+       WHERE c.vaga = ? ORDER BY a.id`,
       [vacancyId],
     );
     return {
@@ -355,14 +366,61 @@ export class AppService {
         id: Number(row.candidaturaId),
         alunoId: Number(row.alunoId),
         aceito: row.aceito === null ? null : Boolean(row.aceito),
+        aluno: {
+          id: Number(row.alunoId),
+          nome: row.alunoNome,
+          curso: row.alunoCurso,
+          periodo: row.alunoPeriodo,
+          instituicao: row.alunoInstituicao,
+          contato: row.alunoContato,
+        },
       })),
     };
+  }
+
+  async getInstitutionStudents(user: AuthenticatedUser, curso?: string) {
+    const institutionId = await this.profileId(this.database, 'instituicoes', user.userId);
+    if (!institutionId) throw new NotFoundException('Perfil da instituição não encontrado.');
+    const courseIds = this.parseIdList(curso, 'curso');
+    const filter = courseIds ? 'AND a.curso IN (?)' : '';
+    return this.rows(
+      `SELECT a.id, u.nome, a.ra, a.periodo, u.contato,
+              JSON_OBJECT('id', c.id, 'nome', c.nome) AS curso
+       FROM alunos a
+       JOIN usuarios u ON u.id = a.usuario
+       JOIN cursos c ON c.id = a.curso
+       WHERE a.instituicao = ? ${filter}
+       ORDER BY a.id`,
+      courseIds ? [institutionId, courseIds] : [institutionId],
+    );
+  }
+
+  async getInstitutionAcceptedApplications(user: AuthenticatedUser) {
+    const institutionId = await this.profileId(this.database, 'instituicoes', user.userId);
+    if (!institutionId) throw new NotFoundException('Perfil da instituição não encontrado.');
+    const rows = await this.database.query<RowDataPacket[]>(
+      `SELECT c.id, c.aceito,
+              JSON_OBJECT('id', a.id, 'nome', ua.nome, 'ra', a.ra, 'periodo', a.periodo) AS aluno,
+              JSON_OBJECT('id', v.id, 'tipo', v.tipo, 'salario', v.salario,
+                          'horarioInicio', v.horario_inicio, 'horarioTermino', v.horario_termino) AS vaga,
+              JSON_OBJECT('id', e.id, 'nome', ue.nome) AS empresa
+       FROM candidaturas c
+       JOIN alunos a ON a.id = c.aluno
+       JOIN usuarios ua ON ua.id = a.usuario
+       JOIN vagas v ON v.id = c.vaga
+       JOIN empresas e ON e.id = v.empresa
+       JOIN usuarios ue ON ue.id = e.usuario
+       WHERE a.instituicao = ? AND c.aceito = TRUE
+       ORDER BY c.id DESC`,
+      [institutionId],
+    );
+    return rows.map((row) => ({ ...row, aceito: Boolean(row.aceito) }));
   }
 
   async getMyApplications(user: AuthenticatedUser) {
     const studentId = await this.profileId(this.database, 'alunos', user.userId);
     if (!studentId) throw new NotFoundException('Perfil do aluno não encontrado.');
-    return this.rows(
+    const rows = await this.database.query<RowDataPacket[]>(
       `SELECT c.id, c.aceito,
               JSON_OBJECT('id', v.id, 'tipo', v.tipo, 'salario', v.salario,
                           'horarioInicio', v.horario_inicio, 'horarioTermino', v.horario_termino) AS vaga,
@@ -375,6 +433,7 @@ export class AppService {
        ORDER BY c.id DESC`,
       [studentId],
     );
+    return rows.map((row) => ({ ...row, aceito: row.aceito === null ? null : Boolean(row.aceito) }));
   }
 
   async updateApplicationStatus(user: AuthenticatedUser, applicationId: number, dto: UpdateApplicationStatusDto) {
@@ -429,7 +488,7 @@ export class AppService {
 
   private async profileId(
     database: DatabaseService,
-    table: 'alunos' | 'empresas',
+    table: 'alunos' | 'empresas' | 'instituicoes',
     userId: number,
   ): Promise<number | null> {
     const sql = `SELECT id FROM ${table} WHERE usuario = ?`;

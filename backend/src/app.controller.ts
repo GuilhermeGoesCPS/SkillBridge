@@ -196,4 +196,16 @@ export class AppController {
   ) {
     return this.appService.updateApplicationStatus(user, id, body);
   }
+
+  @Get('instituicao/alunos')
+  @Roles('instituicao')
+  getInstitutionStudents(@CurrentUser() user: AuthenticatedUser, @Query('curso') curso?: string) {
+    return this.appService.getInstitutionStudents(user, curso);
+  }
+
+  @Get('instituicao/candidaturas')
+  @Roles('instituicao')
+  getInstitutionAcceptedApplications(@CurrentUser() user: AuthenticatedUser) {
+    return this.appService.getInstitutionAcceptedApplications(user);
+  }
 }
