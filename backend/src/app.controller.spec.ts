@@ -58,21 +58,49 @@ describe('AppService filters', () => {
     expect(query).not.toHaveBeenCalled();
   });
 
-  it('returns student IDs for a company-owned vacancy', async () => {
+  it('returns student IDs and data for a company-owned vacancy', async () => {
     query
       .mockResolvedValueOnce([{ id: 5 }])
       .mockResolvedValueOnce([{ id: 12, empresa: 5 }])
       .mockResolvedValueOnce([
-        { candidaturaId: 101, alunoId: 3, aceito: null },
-        { candidaturaId: 102, alunoId: 9, aceito: 1 },
+        {
+          candidaturaId: 101, alunoId: 3, aceito: null,
+          alunoNome: 'Ana Silva', alunoContato: 'ana@example.com', alunoPeriodo: 'm',
+          alunoCurso: { id: 1, nome: 'Desenvolvimento de Sistemas' },
+          alunoInstituicao: { id: 1, nome: 'Fatec Diadema' },
+        },
+        {
+          candidaturaId: 102, alunoId: 9, aceito: 1,
+          alunoNome: 'Bruno Costa', alunoContato: 'bruno@example.com', alunoPeriodo: 't',
+          alunoCurso: { id: 1, nome: 'Desenvolvimento de Sistemas' },
+          alunoInstituicao: { id: 1, nome: 'Fatec Diadema' },
+        },
       ]);
 
     await expect(appService.getApplications({ userId: 22, tipo: 'empresa' }, 12)).resolves.toEqual({
       vagaId: 12,
       alunosIds: [3, 9],
       candidaturas: [
-        { id: 101, alunoId: 3, aceito: null },
-        { id: 102, alunoId: 9, aceito: true },
+        {
+          id: 101, alunoId: 3, aceito: null,
+          aluno: {
+            id: 3, nome: 'Ana Silva',
+            curso: { id: 1, nome: 'Desenvolvimento de Sistemas' },
+            periodo: 'm',
+            instituicao: { id: 1, nome: 'Fatec Diadema' },
+            contato: 'ana@example.com',
+          },
+        },
+        {
+          id: 102, alunoId: 9, aceito: true,
+          aluno: {
+            id: 9, nome: 'Bruno Costa',
+            curso: { id: 1, nome: 'Desenvolvimento de Sistemas' },
+            periodo: 't',
+            instituicao: { id: 1, nome: 'Fatec Diadema' },
+            contato: 'bruno@example.com',
+          },
+        },
       ],
     });
   });

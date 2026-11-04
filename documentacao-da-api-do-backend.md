@@ -262,16 +262,43 @@ O campo `aceito` é `null` enquanto a empresa não decidiu, `true` se aceita ou 
 
 Retorna os IDs dos alunos que se candidataram à vaga identificada por `{id}`, e os dados de cada candidatura. Permitido somente para contas do tipo `empresa` e para a empresa proprietária da vaga.
 
-Resposta: `200 OK`.
+Resposta: `200 OK`. Cada item de `candidaturas` inclui também o campo `aluno`, com os dados básicos do estudante candidato (sem senha, hash, RA ou email).
 
 ```json
 {
   "vagaId": 12,
   "alunosIds": [4, 7, 9],
   "candidaturas": [
-    { "id": 101, "alunoId": 4, "aceito": null },
-    { "id": 102, "alunoId": 7, "aceito": true },
-    { "id": 103, "alunoId": 9, "aceito": false }
+    {
+      "id": 101, "alunoId": 4, "aceito": null,
+      "aluno": {
+        "id": 4, "nome": "Ana Silva",
+        "curso": { "id": 1, "nome": "Análise e Desenvolvimento de Sistemas" },
+        "periodo": "m",
+        "instituicao": { "id": 2, "nome": "Fatec Diadema" },
+        "contato": "ana@example.com"
+      }
+    },
+    {
+      "id": 102, "alunoId": 7, "aceito": true,
+      "aluno": {
+        "id": 7, "nome": "Carlos Souza",
+        "curso": { "id": 1, "nome": "Análise e Desenvolvimento de Sistemas" },
+        "periodo": "t",
+        "instituicao": { "id": 2, "nome": "Fatec Diadema" },
+        "contato": "carlos@example.com"
+      }
+    },
+    {
+      "id": 103, "alunoId": 9, "aceito": false,
+      "aluno": {
+        "id": 9, "nome": "Bruno Costa",
+        "curso": { "id": 3, "nome": "Banco de Dados" },
+        "periodo": "n",
+        "instituicao": { "id": 3, "nome": "Fatec Outra" },
+        "contato": "bruno@example.com"
+      }
+    }
   ]
 }
 ```
@@ -289,6 +316,47 @@ Aceita ou recusa a candidatura identificada por `{candidaturaId}`, usando o `id`
 ```
 
 Resposta: `200 OK`, com `{ "id", "vagaId", "alunoId", "aceito" }`. Uma candidatura inexistente retorna `404 Not Found`; uma candidatura de uma vaga de outra empresa retorna `403 Forbidden`.
+
+### Instituição
+
+As rotas a seguir usam a instituição identificada pelo token; não é possível informar outra instituição por parâmetro, e uma instituição nunca vê alunos ou candidaturas de outra.
+
+#### `GET /api/instituicao/alunos`
+
+Retorna os alunos vinculados à instituição autenticada. Permitido somente para contas do tipo `instituicao`.
+
+Filtro opcional `?curso=1,2` por um ou mais IDs de curso separados por vírgula.
+
+Resposta: `200 OK`.
+
+```json
+[
+  {
+    "id": 4, "nome": "Ana Silva", "ra": "2026000000011", "periodo": "m",
+    "contato": "ana@example.com",
+    "curso": { "id": 1, "nome": "Análise e Desenvolvimento de Sistemas" }
+  }
+]
+```
+
+#### `GET /api/instituicao/candidaturas`
+
+Retorna as candidaturas aceitas (`aceito = true`) de alunos da instituição autenticada, com os dados do aluno, da vaga e da empresa. Permitido somente para contas do tipo `instituicao`.
+
+Resposta: `200 OK`.
+
+```json
+[
+  {
+    "id": 101, "aceito": true,
+    "aluno": { "id": 4, "nome": "Ana Silva", "ra": "2026000000011", "periodo": "m" },
+    "vaga": { "id": 12, "tipo": "Estágio", "salario": 1500.00, "horarioInicio": "09:00:00", "horarioTermino": "15:00:00" },
+    "empresa": { "id": 1, "nome": "Empresa Exemplo" }
+  }
+]
+```
+
+Se não houver candidaturas aceitas, a resposta é uma lista vazia.
 
 ## Códigos de resposta
 
