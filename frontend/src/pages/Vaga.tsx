@@ -36,9 +36,9 @@ export default function Vaga() {
     }
   }
 
-  if (!idValido) return <section className="data-page"><p className="status-message" role="alert">Vaga inválida ou não informada.</p><Link to="/edital">Voltar às vagas</Link></section>;
+  if (!idValido) return <section className="data-page"><p className="status-message" role="alert">Vaga inválida ou não informada.</p></section>;
   if (carregando) return <section className="data-page"><p>Carregando vaga...</p></section>;
-  if (!vaga) return <section className="data-page"><p className="status-message" role="alert">{mensagem}</p><Link to="/edital">Voltar às vagas</Link></section>;
+  if (!vaga) return <section className="data-page"><p className="status-message" role="alert">{mensagem}</p></section>;
 
   const empresa = decodeJson(vaga.empresa);
   const tags = decodeJson(vaga.tags);
@@ -49,13 +49,12 @@ export default function Vaga() {
     <section className="data-page">
       {mensagem && <p className="status-message" role="status">{mensagem}</p>}
       <article className="detail-panel">
-        <Link className="back-link" to="/edital">Voltar às vagas</Link>
         <p className="eyebrow-vaga">{vaga.tipo}</p>
         <h1>{vaga.tipo} #{vaga.id}</h1>
         <p className="empresa-vaga">{empresa.nome}</p>
         <p className="detail-description">{vaga.descricao || "Descrição não informada."}</p>
         <dl className="detail-facts">
-          <div><dt>Remuneração</dt><dd>{salario}</dd></div>
+          <div><dt>Salário</dt><dd>{salario}</dd></div>
           <div><dt>Horário</dt><dd>{vaga.horarioInicio.slice(0, 5)} às {vaga.horarioTermino.slice(0, 5)}</dd></div>
           <div><dt>Vagas disponíveis</dt><dd>{vaga.numeroDeVagas || "Não informado"}</dd></div>
         </dl>

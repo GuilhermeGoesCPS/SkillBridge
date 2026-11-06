@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
+import Candidaturas from "./pages/Candidaturas";
 import Home from "./pages/Home";
 import LoginAluno from "./pages/LoginAluno";
 import LoginEmpresa from "./pages/LoginEmpresa";
@@ -28,6 +29,7 @@ export default function App() {
         <Route path="/sobre-nos" element={<SobreNos />} />
         <Route path="/perfil" element={<Perfil />} />
         <Route path="/talentos" element={<Talentos />} />
+        <Route path="/candidaturas" element={<Candidaturas />} />
         <Route path="/vaga" element={<Vaga />} />
       </Route>
     </Routes>

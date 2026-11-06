@@ -67,6 +67,13 @@ export interface StudentResult {
   tags: Tag[] | string;
 }
 
+export interface MyApplication {
+  id: number;
+  aceito: boolean | null;
+  vaga: { id: number; tipo: string; salario: number | string; horarioInicio: string; horarioTermino: string } | string;
+  empresa: { id: number; nome: string } | string;
+}
+
 export interface InstitutionStudent {
   id: number;
   nome: string;

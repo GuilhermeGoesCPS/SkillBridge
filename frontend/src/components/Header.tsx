@@ -41,6 +41,7 @@ export default function Header() {
           <Link to="/edital">VAGAS</Link>
           <Link to="/sobre-nos">SOBRE NÓS</Link>
           {session?.usuario.tipo === "empresa" && <Link to="/talentos">TALENTOS</Link>}
+          {session?.usuario.tipo === "aluno" && <Link to="/candidaturas">CANDIDATURAS</Link>}
           {session && <Link to="/perfil">MEU PERFIL</Link>}
         </nav>
       )}
