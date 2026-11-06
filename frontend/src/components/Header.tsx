@@ -20,6 +20,11 @@ export default function Header() {
 
   const mostrarVoltar = location.pathname === "/vaga";
 
+  function voltar() {
+    if (window.history.length > 1) navigate(-1);
+    else navigate("/edital");
+  }
+
   return (
     <header>
       <Link to="/">
@@ -32,7 +37,7 @@ export default function Header() {
       </form>
 
       {mostrarVoltar ? (
-        <button type="button" className="header-voltar" onClick={() => navigate(-1)}>
+        <button type="button" className="header-voltar" onClick={voltar}>
           {"< Voltar"}
         </button>
       ) : (
