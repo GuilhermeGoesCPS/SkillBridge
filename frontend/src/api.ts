@@ -31,6 +31,8 @@ export interface Institution {
   usuario: { id: number; nome: string; descricao?: string; contato?: string } | string;
 }
 
+export type Company = Institution;
+
 export interface Vacancy {
   id: number;
   tipo: string;

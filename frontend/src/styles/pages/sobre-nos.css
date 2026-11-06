@@ -1,0 +1,59 @@
+/*-------------------------------------- Sobre Nós --------------------------------------*/
+
+.sobre-nos-page {
+    display: flex;
+    flex-direction: column;
+
+    gap: 30px;
+}
+
+.sobre-nos-bloco {
+    display: flex;
+    align-items: center;
+
+    gap: 40px;
+
+    padding: 40px;
+
+    border-radius: 10px;
+    background-color: #ffffff;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.sobre-nos-circulo {
+    flex-shrink: 0;
+
+    width: 180px;
+    height: 180px;
+
+    border-radius: 50%;
+    background-color: #ab0002;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sobre-nos-circulo img {
+    width: 110px;
+}
+
+.sobre-nos-texto h1 {
+    color: #ab0002;
+    margin-bottom: 16px;
+}
+
+.sobre-nos-texto p {
+    color: #516167;
+    line-height: 1.6;
+}
+
+/*-------- Responsividade --------*/
+
+@media (max-width: 768px) {
+    .sobre-nos-bloco {
+        flex-direction: column;
+        text-align: center;
+    }
+}

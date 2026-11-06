@@ -9,6 +9,7 @@ import CadastroEmpresa from "./pages/CadastroEmpresa";
 import CadastroInstituicao from "./pages/CadastroInstituicao";
 import Edital from "./pages/Edital";
 import Perfil from "./pages/Perfil";
+import SobreNos from "./pages/SobreNos";
 import Talentos from "./pages/Talentos";
 import Vaga from "./pages/Vaga";
 
@@ -24,6 +25,7 @@ export default function App() {
         <Route path="/cadastro-empresa" element={<CadastroEmpresa />} />
         <Route path="/cadastro-instituicao" element={<CadastroInstituicao />} />
         <Route path="/edital" element={<Edital />} />
+        <Route path="/sobre-nos" element={<SobreNos />} />
         <Route path="/perfil" element={<Perfil />} />
         <Route path="/talentos" element={<Talentos />} />
         <Route path="/vaga" element={<Vaga />} />
