@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { apiRequest, decodeJson, getSession, type CurrentUser, type Course, type Institution, type Tag, type Vacancy } from "../api";
 import InstituicaoAlunos from "../components/InstituicaoAlunos";
 import InstituicaoCandidaturas from "../components/InstituicaoCandidaturas";
+import InstituicaoCursos from "../components/InstituicaoCursos";
 import CandidatosVaga from "../components/CandidatosVaga";
+import iconeUsuario from "../assets/icons/icone-usuario.svg";
 
 interface ProfileView extends Omit<CurrentUser, "perfil" | "curso" | "instituicao"> {
   perfil: { id: number; cnpj?: string; ra?: string; periodo?: string };
@@ -136,25 +138,31 @@ export default function Perfil() {
     <section className="data-page profile-page">
       {mensagem && <p className="status-message" role="status">{mensagem}</p>}
       <article className="profile-panel">
-        <p className="eyebrow-vaga">{usuario.tipo}</p>
-        <h1>Meu perfil</h1>
-        <form className="data-form" onSubmit={saveProfile}>
+        <div className="profile-top">
+          <div className="profile-avatar">
+            <img src={iconeUsuario} alt="Foto de perfil" />
+          </div>
+          <div className="profile-top-info">
+            <p className="eyebrow-vaga">{usuario.tipo}</p>
+            <h1>Meu perfil</h1>
+          </div>
+          <button className="button-primary" type="submit" form="form-perfil" disabled={salvando}>
+            {salvando ? "Salvando..." : "Salvar alterações"}
+          </button>
+        </div>
+        <form className="data-form" id="form-perfil" onSubmit={saveProfile}>
           <label htmlFor="nome">Nome</label>
           <input id="nome" name="nome" defaultValue={usuario.nome} maxLength={50} required />
           <label htmlFor="email">E-mail</label>
           <input id="email" name="email" type="email" defaultValue={usuario.email} required />
           <label htmlFor="endereco">Endereço</label>
           <input id="endereco" name="endereco" defaultValue={usuario.endereco} required />
-          <label htmlFor="descricao">Descrição</label>
-          <textarea id="descricao" name="descricao" rows={4} defaultValue={usuario.descricao || ""} />
-          <label htmlFor="contato">Contato</label>
-          <input id="contato" name="contato" defaultValue={usuario.contato || ""} />
           {usuario.tipo === "aluno" && (
             <fieldset className="profile-fields">
-              <legend>Dados acadêmicos</legend>
+              <legend>Unidade, Curso e Horário</legend>
               <label htmlFor="ra">RA</label>
               <input id="ra" name="ra" defaultValue={usuario.perfil.ra} pattern="[0-9]{13}" minLength={13} maxLength={13} required />
-              <label htmlFor="periodo">Período</label>
+              <label htmlFor="periodo">Horário</label>
               <select id="periodo" name="periodo" defaultValue={usuario.perfil.periodo} required>
                 <option value="m">Manhã</option>
                 <option value="t">Tarde</option>
@@ -164,7 +172,7 @@ export default function Perfil() {
               <select id="cursoId" name="cursoId" defaultValue={usuario.curso?.id} required>
                 {cursos.map((curso) => <option key={curso.id} value={curso.id}>{curso.nome}</option>)}
               </select>
-              <label htmlFor="instituicaoId">Instituição</label>
+              <label htmlFor="instituicaoId">Unidade</label>
               <select id="instituicaoId" name="instituicaoId" defaultValue={instituicaoUsuario?.id} required>
                 {instituicoes.map((institution) => {
                   const organization = decodeJson(institution.usuario);
@@ -179,7 +187,10 @@ export default function Perfil() {
               <input id="cnpj" name="cnpj" defaultValue={usuario.perfil.cnpj} pattern="[0-9]{14}" minLength={14} maxLength={14} required />
             </>
           )}
-          <button className="button-primary" type="submit" disabled={salvando}>{salvando ? "Salvando..." : "Salvar alterações"}</button>
+          <label htmlFor="descricao">{usuario.tipo === "aluno" ? "Sobre Mim" : "Visão Geral"}</label>
+          <textarea id="descricao" name="descricao" rows={4} defaultValue={usuario.descricao || ""} />
+          <label htmlFor="contato">Contato</label>
+          <input id="contato" name="contato" defaultValue={usuario.contato || ""} />
         </form>
       </article>
 
@@ -225,6 +236,7 @@ export default function Perfil() {
 
       {usuario.tipo === "instituicao" && (
         <>
+          <InstituicaoCursos />
           <InstituicaoAlunos />
           <InstituicaoCandidaturas />
         </>
