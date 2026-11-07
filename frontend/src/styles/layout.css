@@ -172,7 +172,8 @@ footer{
         max-width: none;
     }
 
-    header nav a{
+    header nav a,
+    .header-voltar{
         font-size: 16px;
     }
 
@@ -203,6 +204,7 @@ footer{
         padding: 30px 20px;
     }
 
+    footer .footer-logo,
     footer .sobre,
     footer .links,
     footer .contatos{

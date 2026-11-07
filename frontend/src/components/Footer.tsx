@@ -1,6 +1,12 @@
+import logoNegativo from "../assets/logos/skillbridge-logo-negativo.svg";
+
 export default function Footer() {
   return (
     <footer>
+      <div className="footer-logo">
+        <img src={logoNegativo} alt="Logo do SkillBridge" />
+      </div>
+
       <div className="sobre">
         <h2>Sobre Nós</h2>
         <p>

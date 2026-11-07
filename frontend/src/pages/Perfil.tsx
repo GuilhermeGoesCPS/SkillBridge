@@ -1,6 +1,9 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiRequest, decodeJson, getSession, type CurrentUser, type Course, type Institution, type Tag, type Vacancy } from "../api";
+import InstituicaoAlunos from "../components/InstituicaoAlunos";
+import InstituicaoCandidaturas from "../components/InstituicaoCandidaturas";
+import CandidatosVaga from "../components/CandidatosVaga";
 
 interface ProfileView extends Omit<CurrentUser, "perfil" | "curso" | "instituicao"> {
   perfil: { id: number; cnpj?: string; ra?: string; periodo?: string };
@@ -213,10 +216,17 @@ export default function Perfil() {
               <div className="application-row" key={vacancy.id}>
                 <h3>{vacancy.tipo} #{vacancy.id}</h3>
                 <p>{studentIds.length} candidatura(s)</p>
-                <p>IDs dos alunos: {studentIds.length ? studentIds.join(", ") : "nenhuma"}</p>
+                <CandidatosVaga vagaId={vacancy.id} />
               </div>
             ))}
           </article>
+        </>
+      )}
+
+      {usuario.tipo === "instituicao" && (
+        <>
+          <InstituicaoAlunos />
+          <InstituicaoCandidaturas />
         </>
       )}
     </section>

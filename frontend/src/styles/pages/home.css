@@ -1,0 +1,80 @@
+/*-------------------------------------- Home --------------------------------------*/
+
+/*--- Bloco "Sobre" ---*/
+
+.home-sobre {
+    display: flex;
+    align-items: center;
+
+    gap: 30px;
+
+    margin: 20px;
+    padding: 40px;
+
+    border-radius: 10px;
+    background-color: #ffffff;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.home-sobre-circle {
+    flex-shrink: 0;
+
+    width: 160px;
+    height: 160px;
+
+    border-radius: 50%;
+    background-color: #ab0002;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-sobre-circle img {
+    width: 100px;
+}
+
+.home-sobre-content h2 {
+    color: #ab0002;
+    margin-bottom: 12px;
+}
+
+.home-sobre-content p {
+    color: #516167;
+    line-height: 1.6;
+}
+
+/*--- Bloco "Empresas Parceiras" ---*/
+
+.home-parceiras {
+    margin: 20px;
+    padding: 40px;
+
+    border-radius: 10px;
+    background-color: #ffffff;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.home-parceiras h2 {
+    color: #ab0002;
+    margin-bottom: 16px;
+}
+
+/*-------- Responsividade --------*/
+
+@media (max-width: 768px) {
+    .home-sobre {
+        flex-direction: column;
+        text-align: center;
+
+        margin: 15px;
+        padding: 24px 20px;
+    }
+
+    .home-parceiras {
+        margin: 15px;
+        padding: 24px 20px;
+    }
+}

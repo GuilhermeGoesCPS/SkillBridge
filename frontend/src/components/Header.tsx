@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { clearSession, getSession, subscribeSessionChange } from "../api";
 import logoNegativo from "../assets/logos/skillbridge-logo-negativo.svg";
 import iconePesquisa from "../assets/icons/icone-pesquisa.svg";
@@ -7,6 +7,7 @@ import iconeUsuario from "../assets/icons/icone-usuario.svg";
 
 export default function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [session, setSession] = useState(getSession);
 
   useEffect(() => subscribeSessionChange(() => setSession(getSession())), []);
@@ -15,6 +16,13 @@ export default function Header() {
     event.preventDefault();
     const query = new FormData(event.currentTarget).get("q")?.toString().trim();
     if (query) navigate(`/edital?q=${encodeURIComponent(query)}`);
+  }
+
+  const mostrarVoltar = location.pathname === "/vaga";
+
+  function voltar() {
+    if (window.history.length > 1) navigate(-1);
+    else navigate("/edital");
   }
 
   return (
@@ -28,12 +36,20 @@ export default function Header() {
         <input type="search" name="q" placeholder="Pesquise aqui..." aria-label="Pesquisar vagas" />
       </form>
 
-      <nav>
-        <Link to="/">HOME</Link>
-        <Link to="/edital">VAGAS</Link>
-        {session?.usuario.tipo === "empresa" && <Link to="/talentos">TALENTOS</Link>}
-        {session && <Link to="/perfil">MEU PERFIL</Link>}
-      </nav>
+      {mostrarVoltar ? (
+        <button type="button" className="header-voltar" onClick={voltar}>
+          {"< Voltar"}
+        </button>
+      ) : (
+        <nav>
+          <Link to="/">HOME</Link>
+          <Link to="/edital">VAGAS</Link>
+          <Link to="/sobre-nos">SOBRE NÓS</Link>
+          {session?.usuario.tipo === "empresa" && <Link to="/talentos">TALENTOS</Link>}
+          {session?.usuario.tipo === "aluno" && <Link to="/candidaturas">CANDIDATURAS</Link>}
+          {session && <Link to="/perfil">MEU PERFIL</Link>}
+        </nav>
+      )}
 
       {session ? (
         <button className="header-logout" type="button" onClick={() => { clearSession(); navigate("/"); }}>Sair</button>

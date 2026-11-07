@@ -763,6 +763,24 @@ header nav a:hover{
     color: #ffffff80;
 }
 
+/* Botão "Voltar" (telas internas) */
+
+.header-voltar{
+    background: transparent;
+    border: none;
+
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 20px;
+    font-family: inherit;
+
+    cursor: pointer;
+}
+
+.header-voltar:hover{
+    color: #ffffff80;
+}
+
 /* Ícones */
 
 .icons{
@@ -879,11 +897,20 @@ footer {
     box-shadow: 0 5px 20px rgba(0,0,0,0.1);
 }
 
+footer .footer-logo img {
+    width: 80px;
+    height: auto;
+}
+
 footer .sobre {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     width: 350px;
+}
+
+footer .sobre p {
+    text-align: left;
 }
 
 footer .links {
