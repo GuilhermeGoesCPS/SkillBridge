@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { apiRequest, saveSession, type AccountType, type LoginResponse } from "../api";
 import AuthTabs from "./AuthTabs";
+import logoNegativo from "../assets/logos/skillbridge-logo-negativo.svg";
 
 interface LoginFormProps {
   tipo: AccountType;
@@ -47,35 +48,50 @@ export default function LoginForm({ tipo }: LoginFormProps) {
   }
 
   return (
-    <div className="auth-page">
-      <section className="auth-card">
-        <h1>Login</h1>
-        <AuthTabs
-          ativo={tipo}
-          aluno={loginPaths.aluno}
-          empresa={loginPaths.empresa}
-          instituicao={loginPaths.instituicao}
-        />
-        <form className="auth-form" onSubmit={handleSubmit}>
-          <label htmlFor="email">E-mail</label>
-          <input id="email" name="email" type="email" autoComplete="username" required />
-          <label htmlFor="senha">Senha</label>
-          <input id="senha" name="senha" type="password" autoComplete="current-password" required />
-          <div className="auth-options">
-            <div className="checkbox-group">
-              <input type="checkbox" id="remember" name="lembrar" />
-              <label htmlFor="remember">Lembrar de mim</label>
-            </div>
-          </div>
-          <button type="submit" className="button-primary" disabled={enviando}>
-            {enviando ? "Entrando..." : "Acessar"}
-          </button>
-          {mensagem && <p className="status-message" role="alert">{mensagem}</p>}
-        </form>
-        <p className="auth-link">
-          Não possui conta? <Link to={registerPaths[tipo]}>Cadastre-se</Link>
-        </p>
-      </section>
+    <div className="auth-split">
+      <aside className="auth-split-painel">
+        <img className="auth-split-logo" src={logoNegativo} alt="" />
+        <h1>Acesse sua conta</h1>
+        <p>Entre ou cadastre-se como aluno, empresa ou instituição.</p>
+      </aside>
+
+      <div className="auth-split-conteudo">
+        <section className="page-header auth-split-header-mobile">
+          <h1>Acesse sua conta</h1>
+          <p>Entre ou cadastre-se como aluno, empresa ou instituição.</p>
+        </section>
+
+        <div className="auth-page">
+          <section className="auth-card">
+            <h2>Entrar</h2>
+            <AuthTabs
+              ativo={tipo}
+              aluno={loginPaths.aluno}
+              empresa={loginPaths.empresa}
+              instituicao={loginPaths.instituicao}
+            />
+            <form className="auth-form" onSubmit={handleSubmit}>
+              <label htmlFor="email">E-mail</label>
+              <input id="email" name="email" type="email" autoComplete="username" required />
+              <label htmlFor="senha">Senha</label>
+              <input id="senha" name="senha" type="password" autoComplete="current-password" required />
+              <div className="auth-options">
+                <div className="checkbox-group">
+                  <input type="checkbox" id="remember" name="lembrar" />
+                  <label htmlFor="remember">Lembrar de mim</label>
+                </div>
+              </div>
+              <button type="submit" className="button-primary" disabled={enviando}>
+                {enviando ? "Entrando..." : "Acessar"}
+              </button>
+              {mensagem && <p className="status-message" role="alert">{mensagem}</p>}
+            </form>
+            <p className="auth-link">
+              Não possui conta? <Link to={registerPaths[tipo]}>Cadastre-se</Link>
+            </p>
+          </section>
+        </div>
+      </div>
     </div>
   );
 }

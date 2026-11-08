@@ -41,15 +41,6 @@
     font-weight: 700;
 }
 
-/*--- Estado vazio com ação de limpar filtros ---*/
-
-.empty-state{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-}
-
 /*-------- Responsividade --------*/
 
 @media (max-width: 768px){

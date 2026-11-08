@@ -129,7 +129,7 @@
 
 .auth-form select,
 .auth-form textarea,
-.data-form input,
+.data-form input:not([type="checkbox"]):not([type="radio"]),
 .data-form select,
 .data-form textarea {
   width: 100%;
@@ -145,12 +145,22 @@
 
 .auth-form select:focus,
 .auth-form textarea:focus,
-.data-form input:focus,
+.data-form input:not([type="checkbox"]):not([type="radio"]):focus,
 .data-form select:focus,
 .data-form textarea:focus {
   outline: none;
   border-color: #ab0002;
   box-shadow: 0 0 0 3px rgba(171,0,2,0.15);
+}
+
+.data-form input[type="checkbox"],
+.data-form input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  min-height: 0;
+  flex-shrink: 0;
+  accent-color: #ab0002;
+  cursor: pointer;
 }
 
 .auth-form textarea,
@@ -224,6 +234,10 @@
 
 .empty-state {
   grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
   padding: 40px 20px;
   border-radius: 16px;
   background: #ffffff;

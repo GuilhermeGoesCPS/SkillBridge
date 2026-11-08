@@ -54,104 +54,130 @@ export default function CadastroAluno() {
   }
 
   return (
-    <div className="auth-page">
-      <section className="auth-card">
-        <h1>Cadastro</h1>
+    <>
+      <section className="page-header">
+        <h1>Cadastro de aluno</h1>
+        <p>Encontre vagas compatíveis com a sua jornada acadêmica.</p>
+      </section>
 
+      <div className="auth-page">
+      <section className="auth-card auth-card--wide">
         <AuthTabs ativo="aluno" aluno="/cadastro-aluno" empresa="/cadastro-empresa" instituicao="/cadastro-instituicao" />
 
         <form className="auth-form" onSubmit={handleSubmit}>
-          <label htmlFor="nome">Nome</label>
-          <input
-            type="text"
-            id="nome"
-            name="nome"
-            placeholder="Digite seu nome completo."
-            autoComplete="name"
-            required
-          />
+          <div className="campo-form">
+            <label htmlFor="nome">Nome</label>
+            <input
+              type="text"
+              id="nome"
+              name="nome"
+              placeholder="Digite seu nome completo."
+              autoComplete="name"
+              required
+            />
+          </div>
 
-          <label htmlFor="email">E-mail</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Digite seu e-mail"
-            autoComplete="email"
-            required
-          />
+          <div className="campo-form">
+            <label htmlFor="email">E-mail</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Digite seu e-mail"
+              autoComplete="email"
+              required
+            />
+          </div>
 
-          <label htmlFor="ra">RA</label>
-          <input
-            type="text"
-            id="ra"
-            name="ra"
-            placeholder="13 dígitos, somente números."
-            inputMode="numeric"
-            pattern="[0-9]{13}"
-            minLength={13}
-            maxLength={13}
-            required
-          />
+          <div className="campo-form">
+            <label htmlFor="ra">RA</label>
+            <input
+              type="text"
+              id="ra"
+              name="ra"
+              placeholder="13 dígitos, somente números."
+              inputMode="numeric"
+              pattern="[0-9]{13}"
+              minLength={13}
+              maxLength={13}
+              required
+            />
+          </div>
 
-          <label htmlFor="endereco">Endereço</label>
-          <input id="endereco" name="endereco" autoComplete="street-address" required />
+          <div className="campo-form">
+            <label htmlFor="endereco">Endereço</label>
+            <input id="endereco" name="endereco" autoComplete="street-address" required />
+          </div>
 
-          <label htmlFor="periodo">Período</label>
-          <select id="periodo" name="periodo" required defaultValue="">
-            <option value="" disabled>Selecione</option>
-            <option value="m">Manhã</option>
-            <option value="t">Tarde</option>
-            <option value="n">Noite</option>
-          </select>
+          <div className="campo-form">
+            <label htmlFor="periodo">Período</label>
+            <select id="periodo" name="periodo" required defaultValue="">
+              <option value="" disabled>Selecione</option>
+              <option value="m">Manhã</option>
+              <option value="t">Tarde</option>
+              <option value="n">Noite</option>
+            </select>
+          </div>
 
-          <label htmlFor="cursoId">Curso</label>
-          <select id="cursoId" name="cursoId" required defaultValue="">
-            <option value="" disabled>{cursos.length ? "Selecione um curso" : "Nenhum curso cadastrado"}</option>
-            {cursos.map((curso) => <option key={curso.id} value={curso.id}>{curso.nome}</option>)}
-          </select>
+          <div className="campo-form">
+            <label htmlFor="cursoId">Curso</label>
+            <select id="cursoId" name="cursoId" required defaultValue="">
+              <option value="" disabled>{cursos.length ? "Selecione um curso" : "Nenhum curso cadastrado"}</option>
+              {cursos.map((curso) => <option key={curso.id} value={curso.id}>{curso.nome}</option>)}
+            </select>
+          </div>
 
-          <label htmlFor="instituicaoId">Instituição</label>
-          <select id="instituicaoId" name="instituicaoId" required defaultValue="">
-            <option value="" disabled>{instituicoes.length ? "Selecione uma instituição" : "Nenhuma instituição cadastrada"}</option>
-            {instituicoes.map((instituicao) => {
-              const usuario = typeof instituicao.usuario === "string" ? JSON.parse(instituicao.usuario) as { nome: string } : instituicao.usuario;
-              return <option key={instituicao.id} value={instituicao.id}>{usuario.nome}</option>;
-            })}
-          </select>
+          <div className="campo-form">
+            <label htmlFor="instituicaoId">Instituição</label>
+            <select id="instituicaoId" name="instituicaoId" required defaultValue="">
+              <option value="" disabled>{instituicoes.length ? "Selecione uma instituição" : "Nenhuma instituição cadastrada"}</option>
+              {instituicoes.map((instituicao) => {
+                const usuario = typeof instituicao.usuario === "string" ? JSON.parse(instituicao.usuario) as { nome: string } : instituicao.usuario;
+                return <option key={instituicao.id} value={instituicao.id}>{usuario.nome}</option>;
+              })}
+            </select>
+          </div>
 
-          <label htmlFor="descricao">Sobre você</label>
-          <textarea id="descricao" name="descricao" rows={3} />
+          <div className="campo-form campo-form--full">
+            <label htmlFor="descricao">Sobre você</label>
+            <textarea id="descricao" name="descricao" rows={3} />
+          </div>
 
-          <label htmlFor="contato">Contato</label>
-          <input id="contato" name="contato" autoComplete="tel" />
+          <div className="campo-form">
+            <label htmlFor="contato">Contato</label>
+            <input id="contato" name="contato" autoComplete="tel" />
+          </div>
 
-          <label htmlFor="senha">Senha</label>
-          <input
-            type="password"
-            id="senha"
-            name="senha"
-            placeholder="Digite a sua senha"
-            autoComplete="new-password"
-            minLength={10}
-            maxLength={128}
-            required
-            value={senha}
-            onChange={(event) => setSenha(event.target.value)}
-          />
+          <div className="campo-form">
+            <label htmlFor="senha">Senha</label>
+            <input
+              type="password"
+              id="senha"
+              name="senha"
+              placeholder="Digite a sua senha"
+              autoComplete="new-password"
+              minLength={10}
+              maxLength={128}
+              required
+              value={senha}
+              onChange={(event) => setSenha(event.target.value)}
+            />
+          </div>
 
-          <label htmlFor="confirmar-senha">Confirmar Senha</label>
-          <input
-            ref={confirmarRef}
-            type="password"
-            id="confirmar-senha"
-            name="confirmar-senha"
-            placeholder="Repita a sua senha"
-            autoComplete="new-password"
-            required
-            value={confirmarSenha}
-            onChange={(event) => setConfirmarSenha(event.target.value)}
-          />
+          <div className="campo-form">
+            <label htmlFor="confirmar-senha">Confirmar Senha</label>
+            <input
+              ref={confirmarRef}
+              type="password"
+              id="confirmar-senha"
+              name="confirmar-senha"
+              placeholder="Repita a sua senha"
+              autoComplete="new-password"
+              required
+              value={confirmarSenha}
+              onChange={(event) => setConfirmarSenha(event.target.value)}
+            />
+          </div>
 
           <button type="submit" className="button-primary" disabled={enviando || !cursos.length || !instituicoes.length}>
             {enviando ? "Criando conta..." : "Cadastre-se"}
@@ -164,6 +190,7 @@ export default function CadastroAluno() {
           <Link to="/login-aluno">Entrar</Link>
         </p>
       </section>
-    </div>
+      </div>
+    </>
   );
 }

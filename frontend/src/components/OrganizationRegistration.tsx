@@ -49,58 +49,84 @@ export default function OrganizationRegistration({ tipo }: OrganizationRegistrat
   }
 
   const nomeTipo = tipo === "empresa" ? "empresa" : "instituição";
+  const cabecalho = tipo === "empresa"
+    ? { titulo: "Cadastro de empresa", subtitulo: "Publique vagas e encontre alunos do Centro Paula Souza." }
+    : { titulo: "Cadastro de instituição", subtitulo: "Acompanhe os alunos e as candidaturas da sua unidade." };
+
   return (
-    <div className="auth-page">
-      <section className="auth-card">
-        <h1>Cadastro</h1>
-        <AuthTabs
-          ativo={tipo}
-          aluno={registerPaths.aluno}
-          empresa={registerPaths.empresa}
-          instituicao={registerPaths.instituicao}
-        />
-        <form className="auth-form" onSubmit={handleSubmit}>
-          <label htmlFor="nome">Nome {tipo === "empresa" ? "da empresa" : "da instituição"}</label>
-          <input id="nome" name="nome" autoComplete="organization" maxLength={50} required />
-          <label htmlFor="email">E-mail</label>
-          <input id="email" name="email" type="email" autoComplete="email" maxLength={100} required />
-          <label htmlFor="cnpj">CNPJ</label>
-          <input id="cnpj" name="cnpj" inputMode="numeric" pattern="[0-9]{14}" minLength={14} maxLength={14} placeholder="14 dígitos, somente números" required />
-          <label htmlFor="endereco">Endereço</label>
-          <input id="endereco" name="endereco" autoComplete="street-address" required />
-          <label htmlFor="descricao">Sobre {nomeTipo}</label>
-          <textarea id="descricao" name="descricao" rows={3} />
-          <label htmlFor="contato">Contato</label>
-          <input id="contato" name="contato" autoComplete="tel" />
-          <label htmlFor="senha">Senha</label>
-          <input
-            id="senha"
-            name="senha"
-            type="password"
-            autoComplete="new-password"
-            minLength={10}
-            required
-            value={senha}
-            onChange={(event) => setSenha(event.target.value)}
-          />
-          <label htmlFor="confirmar-senha">Confirmar senha</label>
-          <input
-            ref={confirmarRef}
-            id="confirmar-senha"
-            name="confirmar-senha"
-            type="password"
-            autoComplete="new-password"
-            required
-            value={confirmarSenha}
-            onChange={(event) => setConfirmarSenha(event.target.value)}
-          />
-          <button type="submit" className="button-primary" disabled={enviando}>
-            {enviando ? "Criando conta..." : "Cadastre-se"}
-          </button>
-          {mensagem && <p className="status-message" role="alert">{mensagem}</p>}
-        </form>
-        <p className="auth-link">Já possui conta? <Link to={loginPaths[tipo]}>Entrar</Link></p>
+    <>
+      <section className="page-header">
+        <h1>{cabecalho.titulo}</h1>
+        <p>{cabecalho.subtitulo}</p>
       </section>
-    </div>
+
+      <div className="auth-page">
+        <section className="auth-card auth-card--wide">
+          <AuthTabs
+            ativo={tipo}
+            aluno={registerPaths.aluno}
+            empresa={registerPaths.empresa}
+            instituicao={registerPaths.instituicao}
+          />
+          <form className="auth-form" onSubmit={handleSubmit}>
+            <div className="campo-form">
+              <label htmlFor="nome">Nome {tipo === "empresa" ? "da empresa" : "da instituição"}</label>
+              <input id="nome" name="nome" autoComplete="organization" maxLength={50} required />
+            </div>
+            <div className="campo-form">
+              <label htmlFor="email">E-mail</label>
+              <input id="email" name="email" type="email" autoComplete="email" maxLength={100} required />
+            </div>
+            <div className="campo-form">
+              <label htmlFor="cnpj">CNPJ</label>
+              <input id="cnpj" name="cnpj" inputMode="numeric" pattern="[0-9]{14}" minLength={14} maxLength={14} placeholder="14 dígitos, somente números" required />
+            </div>
+            <div className="campo-form">
+              <label htmlFor="endereco">Endereço</label>
+              <input id="endereco" name="endereco" autoComplete="street-address" required />
+            </div>
+            <div className="campo-form campo-form--full">
+              <label htmlFor="descricao">Sobre {nomeTipo}</label>
+              <textarea id="descricao" name="descricao" rows={3} />
+            </div>
+            <div className="campo-form">
+              <label htmlFor="contato">Contato</label>
+              <input id="contato" name="contato" autoComplete="tel" />
+            </div>
+            <div className="campo-form">
+              <label htmlFor="senha">Senha</label>
+              <input
+                id="senha"
+                name="senha"
+                type="password"
+                autoComplete="new-password"
+                minLength={10}
+                required
+                value={senha}
+                onChange={(event) => setSenha(event.target.value)}
+              />
+            </div>
+            <div className="campo-form">
+              <label htmlFor="confirmar-senha">Confirmar senha</label>
+              <input
+                ref={confirmarRef}
+                id="confirmar-senha"
+                name="confirmar-senha"
+                type="password"
+                autoComplete="new-password"
+                required
+                value={confirmarSenha}
+                onChange={(event) => setConfirmarSenha(event.target.value)}
+              />
+            </div>
+            <button type="submit" className="button-primary" disabled={enviando}>
+              {enviando ? "Criando conta..." : "Cadastre-se"}
+            </button>
+            {mensagem && <p className="status-message" role="alert">{mensagem}</p>}
+          </form>
+          <p className="auth-link">Já possui conta? <Link to={loginPaths[tipo]}>Entrar</Link></p>
+        </section>
+      </div>
+    </>
   );
 }

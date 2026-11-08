@@ -98,6 +98,7 @@ main{
 .checkbox-group{
     display: flex;
     align-items: center;
+    min-height: 44px;
 
     gap: 10px;
 }
