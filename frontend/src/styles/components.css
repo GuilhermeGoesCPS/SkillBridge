@@ -532,7 +532,8 @@
 
 .tags-edital{
     display: flex;
-    justify-content: center;
+    align-items: center;
+    justify-content: flex-start;
 
     gap: 15px;
 
@@ -585,11 +586,51 @@
 .content-vaga {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
+    width: 100%;
 }
 
-.content-vaga a{
-    align-self: flex-end;
+.empresa-vaga-linha {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.empresa-avatar {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    background-color: #ab0002;
+
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.card-vaga-rodape {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    margin-top: 4px;
+    padding-top: 16px;
+
+    border-top: 1px solid #d4d9dc;
+}
+
+p.card-vaga-info {
+    color: #516167;
+    font-size: 14px;
+    font-weight: 700;
 }
 
 .img-vaga {

@@ -14,6 +14,12 @@
   color: #28734a;
 }
 
+.status-message[data-type="loading"] {
+  border-color: #516167;
+  background: #ffffff;
+  color: #516167;
+}
+
 .data-page {
   width: min(1120px, 100%);
   margin: 0 auto;

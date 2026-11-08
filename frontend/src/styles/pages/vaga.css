@@ -1,0 +1,94 @@
+/*-------------------------------------- Vaga --------------------------------------*/
+
+.data-page .detail-panel{
+    border-radius: 16px;
+}
+
+.vaga-grid{
+    display: grid;
+    grid-template-columns: 1fr minmax(280px, 340px);
+    align-items: start;
+
+    gap: 24px;
+}
+
+.vaga-coluna-principal{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    min-width: 0;
+}
+
+.vaga-coluna-principal .empresa-vaga-linha{
+    margin: 14px 0;
+}
+
+.vaga-coluna-principal .detail-panel h2{
+    margin: 0 0 16px;
+    color: #ab0002;
+}
+
+.vaga-coluna-principal .detail-description{
+    margin: 0;
+}
+
+.vaga-resumo{
+    position: sticky;
+    top: 24px;
+}
+
+.vaga-resumo h2{
+    color: #ab0002;
+}
+
+.vaga-resumo .detail-facts{
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    margin: 20px 0;
+    padding: 20px 0;
+
+    border-top: 1px solid #d4d9dc;
+    border-bottom: 1px solid #d4d9dc;
+}
+
+.vaga-resumo .detail-facts > div{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+
+    gap: 12px;
+}
+
+.vaga-resumo .detail-facts dt{
+    color: #516167;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.vaga-resumo .detail-facts dd{
+    color: #263238;
+    font-weight: 700;
+    text-align: right;
+}
+
+.vaga-resumo .button-primary,
+.vaga-resumo a.button-primary{
+    width: 100%;
+}
+
+/*-------- Responsividade --------*/
+
+@media (max-width: 768px){
+    .vaga-grid{
+        grid-template-columns: 1fr;
+    }
+
+    .vaga-resumo{
+        position: static;
+    }
+}
