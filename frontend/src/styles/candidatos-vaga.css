@@ -1,34 +1,23 @@
-.candidato-row {
-  padding: 14px 0;
-  border-bottom: 1px solid #d4d9dc;
-}
-
-.candidato-row:last-child {
-  border-bottom: none;
-}
-
 .candidato-nome {
   font-weight: 700;
-}
-
-.candidato-situacao {
-  font-weight: 700;
-}
-
-.candidato-situacao--pendente {
-  color: #516167;
-}
-
-.candidato-situacao--aceito {
-  color: #28734a;
-}
-
-.candidato-situacao--recusado {
-  color: #ab0002;
 }
 
 .candidato-acoes {
   display: flex;
   gap: 10px;
-  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.candidato-acoes .button-primary,
+.candidato-acoes .button-destructive {
+  min-height: 36px;
+  padding: 8px 14px;
+  font-size: 14px;
+}
+
+.candidatura-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }

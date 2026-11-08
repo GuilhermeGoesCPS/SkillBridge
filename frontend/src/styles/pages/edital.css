@@ -1,0 +1,58 @@
+/*-------------------------------------- Edital --------------------------------------*/
+
+/*--- Campos do painel de filtros ---*/
+
+.acoes-edital{
+    align-items: flex-end;
+}
+
+.campo-edital{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.campo-edital label{
+    font-size: 13px;
+    font-weight: 700;
+    color: #516167;
+}
+
+.campo-edital-busca{
+    flex: 1 1 280px;
+}
+
+.tags-edital-label{
+    align-self: center;
+    margin-right: 4px;
+
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+
+    color: #516167;
+}
+
+/*--- Contagem de resultados ---*/
+
+.results-count{
+    color: #263238;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/*-------- Responsividade --------*/
+
+@media (max-width: 768px){
+    .campo-edital-busca{
+        flex-basis: 100%;
+    }
+
+    .filtros-edital{
+        width: 100%;
+    }
+
+    .filtros-edital .campo-edital{
+        flex: 1;
+    }
+}

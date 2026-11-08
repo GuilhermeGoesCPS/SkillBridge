@@ -4,6 +4,11 @@
 
 /*-------- Botão Primário --------*/
 .button-primary{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+
     background-color: #ab0002;
     color: #ffffff;
     text-align: center;
@@ -11,17 +16,19 @@
     border-radius: 15px;
 
     text-decoration: none;
-    padding: 10px 24px;
+    padding: 12px 26px;
 
     border: none;
     cursor: pointer;
     font-size: inherit;
+
+    transition: background-color 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 
 /* Botão Primário - Hover */
 .button-primary:hover{
     background-color: #860002;
-    color: #ffffff80;
+    color: #ffffff;
 }
 
 /* Botão Primário - Desabilitado */
@@ -32,31 +39,47 @@
 
 /*-------- Botão Secundário --------*/
 .button-secundary{
-    background-color: transparent;
-    color: #516167;
-    border: 1px solid #516167;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+
+    background-color: #ffffff;
+    color: #ab0002;
+    border: 1.5px solid #ab0002;
     text-align: center;
     font-weight: bold;
     border-radius: 15px;
 
     text-decoration: none;
-    padding: 10px;
+    padding: 12px 24px;
+
+    cursor: pointer;
+    font-size: inherit;
+
+    transition: background-color 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 
 /* Botão Secundário - Hover */
 .button-secundary:hover{
-    color: #3a464a;
-    border: 1px solid #3a464a;
+    background-color: #fff1f1;
+    color: #860002;
+    border: 1.5px solid #860002;
 }
 
 /* Botão Secundário - Desabilitado */
 .button-secundary:disabled{
-    color: #3a464a80;
-    border: 1px solid #3a464a80;
+    color: #ab000380;
+    border: 1.5px solid #ab000380;
 }
 
 /*-------- Botão Terciário --------*/
 .button-tertiary{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+
     background-color: transparent;
     color: #ab0002;
     text-align: center;
@@ -64,7 +87,13 @@
     border-radius: 15px;
 
     text-decoration: none;
-    padding: 10px;
+    padding: 12px 20px;
+
+    border: none;
+    cursor: pointer;
+    font-size: inherit;
+
+    transition: background-color 0.2s, color 0.2s;
 }
 
 /* Botão Terciário - Hover */
@@ -93,7 +122,7 @@
 /* Botão Destrutivo - Hover */
 .button-destructive:hover{
     background-color: #be3e21;
-    color: #ffffff80;
+    color: #ffffff;
 }
 
 /* Botão Destrutivo - Desabilitado */
@@ -106,20 +135,30 @@
 
 /*-------- Botão Primário --------*/
 .button-primaryb{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+
     background-color: #ffffff;
     color: #ab0002;
     text-align: center;
     font-weight: bold;
-    border-radius: 15px;
+    border-radius: 999px;
 
     text-decoration: none;
-    padding: 10px;
+    padding: 10px 26px;
+    border: none;
+    cursor: pointer;
+    font-size: inherit;
+
+    transition: background-color 0.2s, color 0.2s;
 }
 
 /* Botão Primário - Hover */
 .button-primaryb:hover{
     background-color: #d5d5d5;
-    color: #ab000280;
+    color: #ab0002;
 }
 
 /* Botão Primário - Desabilitado */
@@ -130,39 +169,58 @@
 
 /*-------- Botão Secundário --------*/
 .button-secundaryb{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+
     background-color: transparent;
     color: #ffffff;
-    border: 1px solid #ffffff;
+    border: 1.5px solid #ffffff;
     text-align: center;
     font-weight: bold;
-    border-radius: 15px;
+    border-radius: 999px;
 
     text-decoration: none;
-    padding: 10px;
+    padding: 9px 22px;
+    cursor: pointer;
+    font-size: 15px;
+
+    transition: background-color 0.2s, color 0.2s;
 }
 
 /* Botão Secundário - Hover */
 .button-secundaryb:hover{
-    color: #d5d5d5;
-    border: 1px solid #d5d5d5;
+    background-color: #ffffff;
+    color: #ab0002;
 }
 
 /* Botão Secundário - Desabilitado */
 .button-secundaryb:disabled{
     color: #ffffff80;
-    border: 1px solid #ffffff80;
+    border: 1.5px solid #ffffff80;
 }
 
 /*-------- Botão Terciário --------*/
 .button-tertiaryb{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+
     background-color: transparent;
     color: #ffffff;
     text-align: center;
     font-weight: bold;
-    border-radius: 15px;
+    border-radius: 999px;
 
     text-decoration: none;
-    padding: 10px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: inherit;
+
+    transition: background-color 0.2s, color 0.2s;
 }
 
 /* Botão Terciário - Hover */
@@ -211,10 +269,17 @@
     margin: 20px;
     padding: 40px;
 
-    border-radius: 10px;
+    border-radius: 18px;
     background-color: #ffffff;
 
     box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.card:hover {
+    box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
 }
 
 /* Card Informativo */
@@ -253,57 +318,36 @@
 
 /*--- Inputs ---*/
 
-/* Checkbox Passivo */
+/* Checkbox */
 .checkbox-group input[type="checkbox"]{
+    width: 20px;
+    height: 20px;
+    min-height: 0;
+    flex-shrink: 0;
 
-    appearance: none;
+    margin: 0;
 
-    width: 18px;
-    height: 18px;
-
-    border: 2px solid #ab0002;
-
-    border-radius: 4px;
+    accent-color: #ab0002;
 
     cursor: pointer;
-
-    transition: 0.2s;
-
-    position: relative;
-
-    display: inline-block;
-}
-
-/* Checkbox Ativo */
-.checkbox-group input[type="checkbox"]:checked{
-    background-color: #ab0002;
-}
-
-.checkbox-group input[type="checkbox"]:checked::before{
-
-    content: "✓";
-
-    color: white;
-
-    font-size: 14px;
-    font-weight: bold;
-
-    position: absolute;
-
-    top: 50%;
-    left: 50%;
-
-    transform: translate(-50%, -50%);
-}
-
-/* Checkbox - Hover */
-.checkbox-group input[type="checkbox"]:hover{
-    border-color: #860002;
 }
 
 /* Checkbox - Texto */
 .checkbox-group label{
     color: #516167;
+    cursor: pointer;
+}
+
+/* Checkbox e radio fora de .checkbox-group (ex.: tag-option) */
+input[type="checkbox"],
+input[type="radio"]{
+    width: 20px;
+    height: 20px;
+    min-height: 0;
+    flex-shrink: 0;
+
+    accent-color: #ab0002;
+
     cursor: pointer;
 }
 
@@ -356,6 +400,7 @@
 
     margin-bottom: 20px;
 
+    border-radius: 18px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.1);
 }
 
@@ -394,8 +439,9 @@
     max-width: 400px;
     height: 50px;
 
-    background-color: #f3f3f3;
+    background-color: #f2f2f2;
 
+    border: 1px solid transparent;
     border-radius: 12px;
 
     display: flex;
@@ -404,6 +450,12 @@
     padding: 0 20px;
 
     gap: 15px;
+
+    transition: border-color 0.2s;
+}
+
+.searchbox-edital:focus-within{
+    border-color: #ab0002;
 }
 
 .searchbox-edital input{
@@ -433,7 +485,7 @@
 
     padding: 0 20px;
 
-    border: 1px solid #d9d9d9;
+    border: 1px solid #d4d9dc;
     border-radius: 12px;
 
     background-color: #ffffff;
@@ -459,7 +511,8 @@
 
 .tags-edital{
     display: flex;
-    justify-content: center;
+    align-items: center;
+    justify-content: flex-start;
 
     gap: 15px;
 
@@ -467,7 +520,7 @@
 }
 
 .tags-edital button{
-    background-color: #f3f3f3;
+    background-color: #f2f2f2;
 
     border: none;
     border-radius: 30px;
@@ -496,20 +549,67 @@
 
     padding: 20px;
 
-    border-radius: 10px;
+    border-radius: 16px;
     background-color: #ffffff;
 
     box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.card-vaga:hover {
+    box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
 }
 
 .content-vaga {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
+    width: 100%;
 }
 
-.content-vaga a{
-    align-self: flex-end;
+.empresa-vaga-linha {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.empresa-avatar {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    background-color: #ab0002;
+
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.card-vaga-rodape {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    margin-top: 4px;
+    padding-top: 16px;
+
+    border-top: 1px solid #d4d9dc;
+}
+
+p.card-vaga-info {
+    color: #516167;
+    font-size: 14px;
+    font-weight: 700;
 }
 
 .img-vaga {
@@ -557,9 +657,9 @@
     box-shadow: 0 5px 20px rgba(0,0,0,0.1);
 }
 
-.auth-card h1{
+.auth-card h2{
     color: #ab0002;
-    font-size: 40px;
+    font-size: 26px;
     text-align: left;
 }
 
@@ -620,21 +720,31 @@
     color: #516167;
 }
 
-.auth-form input{
+.campo-form{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.auth-form input:not([type="checkbox"]):not([type="radio"]){
     width: 100%;
+    min-height: 50px;
 
     padding: 15px;
 
     border-radius: 10px;
-    border: 1px solid #c5c5c5;
+    border: 1px solid #d4d9dc;
 
     font-size: 16px;
 
     outline: none;
+
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.auth-form input:focus{
+.auth-form input:not([type="checkbox"]):not([type="radio"]):focus{
     border: 1px solid #ab0002;
+    box-shadow: 0 0 0 3px rgba(171,0,2,0.15);
 }
 
 .auth-form a{
@@ -663,6 +773,83 @@
     color: #ab0002;
     font-weight: bold;
     text-decoration: none;
+}
+
+/* Login: painel vermelho + formulário lado a lado (telas largas) */
+
+.auth-split-painel{
+    display: none;
+}
+
+@media (min-width: 900px){
+    .auth-split{
+        display: flex;
+        align-items: stretch;
+
+        min-height: calc(100vh - 80px);
+    }
+
+    .auth-split-painel{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        flex: 1 1 42%;
+        max-width: 480px;
+
+        gap: 20px;
+        padding: 60px;
+
+        background-color: #ab0002;
+    }
+
+    .auth-split-logo{
+        width: 112px;
+        height: auto;
+        filter: brightness(0) invert(1);
+    }
+
+    .auth-split-painel h1,
+    .auth-split-painel p{
+        color: #ffffff;
+    }
+
+    .auth-split-painel p{
+        max-width: 380px;
+        line-height: 1.6;
+    }
+
+    .auth-split-conteudo{
+        flex: 1;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .auth-split-header-mobile{
+        display: none;
+    }
+}
+
+/* Cadastro: card largo com campos em duas colunas (telas largas) */
+
+@media (min-width: 900px){
+    .auth-card--wide{
+        max-width: 1100px;
+    }
+
+    .auth-card--wide .auth-form{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px 24px;
+    }
+
+    .auth-card--wide .auth-form .campo-form--full,
+    .auth-card--wide .auth-form > button,
+    .auth-card--wide .auth-form > .status-message{
+        grid-column: 1 / -1;
+    }
 }
 
 /*-------------------------------------- Banner --------------------------------------*/
@@ -745,22 +932,60 @@
 
 /*-------------------------------------- Cabeçalho (header) - Barra de Navegação --------------------------------------*/
 
+/* Grupo esquerdo: logo + marca + pesquisa */
+
+.header-start{
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    min-width: 0;
+}
+
+.header-logo-link,
+.header-logo-link:link,
+.header-logo-link:visited,
+.header-logo-link:hover,
+.header-logo-link:focus{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.brand-name{
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 22px;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
 /* Menu */
 
 header nav{
     display: flex;
-    gap: clamp(20px, 5vw, 120px);
+    align-items: center;
+    gap: clamp(20px, 4vw, 60px);
 }
 
 header nav a{
     color: #ffffff;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 17px;
     text-decoration: none;
+    padding: 4px 2px;
+    border-bottom: 2px solid transparent;
 }
 
 header nav a:hover{
     color: #ffffff80;
+}
+
+header nav a.active{
+    border-bottom-color: #ffffff;
 }
 
 /* Botão "Voltar" (telas internas) */
@@ -781,6 +1006,39 @@ header nav a:hover{
     color: #ffffff80;
 }
 
+/* Ações à direita: Entrar/Sair + avatar */
+
+.header-actions{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+}
+
+.avatar-circle{
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1.5px solid #ffffff;
+    border-radius: 50%;
+
+    transition: background-color 0.2s;
+}
+
+.avatar-circle:hover{
+    background-color: rgba(255,255,255,0.15);
+}
+
+.avatar-circle .icons{
+    width: 20px;
+    cursor: pointer;
+}
+
 /* Ícones */
 
 .icons{
@@ -789,8 +1047,9 @@ header nav a:hover{
 }
 
 #logo{
-    width: 80px;
+    width: 60px;
     height: auto;
+    filter: brightness(0) invert(1);
 }
 
 #perfil{
@@ -799,27 +1058,30 @@ header nav a:hover{
     fill: #ffffff;
 }
 
-#perfil:hover{
-    fill: #d5d5d5;
-}
-
 /* Campo de Pesquisa */
 
 .search-box{
     width: 100%;
-    max-width: 500px;
-    height: 50px;
+    max-width: 320px;
+    height: 44px;
 
     background-color: #ffffff;
 
+    border: 1px solid transparent;
     border-radius: 50px;
 
     display: flex;
     align-items: center;
 
-    padding: 0 20px;
+    padding: 0 18px;
 
-    gap: 15px;
+    gap: 12px;
+
+    transition: border-color 0.2s;
+}
+
+.search-box:focus-within{
+    border-color: #ab0002;
 }
 
 .search-box input{
@@ -828,7 +1090,7 @@ header nav a:hover{
     border: none;
     outline: none;
 
-    font-size: 18px;
+    font-size: 15px;
 
     color: #516167;
 
@@ -836,7 +1098,7 @@ header nav a:hover{
 }
 
 #pesquisa{
-    width: 24px;
+    width: 20px;
 }
 
 /*-------------------------------------- Rodapé (footer) --------------------------------------*/
@@ -845,10 +1107,10 @@ header nav a:hover{
 
 /* Títulos */
 footer h2 {
-    font-size: 28px;
+    font-size: 20px;
     color: #ffffff;
     font-weight: bold;
-    padding-bottom: 20px;
+    padding-bottom: 16px;
 }
 
 /* Subtítulos */
@@ -860,18 +1122,20 @@ footer h3 {
 
 /* Contéudo */
 footer p {
-    font-size: 20px;
+    font-size: 15px;
+    line-height: 1.6;
     color: #ffffff;
-    text-align: justify;
+    text-align: left;
     margin-bottom: 20px;
 }
 
 /* Link */
 footer a {
-    font-size: 20px;
+    display: block;
+    font-size: 15px;
     color: #ffffff;
-    text-align: justify;
-    margin-bottom: 20px;
+    text-align: left;
+    margin-bottom: 14px;
 }
 
 /* Links para outras páginas */
@@ -897,9 +1161,21 @@ footer {
     box-shadow: 0 5px 20px rgba(0,0,0,0.1);
 }
 
+footer .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 200px;
+}
+
 footer .footer-logo img {
-    width: 80px;
+    width: 48px;
     height: auto;
+    filter: brightness(0) invert(1);
+}
+
+footer .footer-logo .brand-name {
+    font-size: 20px;
 }
 
 footer .sobre {
@@ -925,4 +1201,97 @@ footer .contatos {
     flex-direction: column;
     justify-content: flex-start;
     width: 200px;
+}
+
+/*-------------------------------------- Status (pills) --------------------------------------*/
+
+.status-pill{
+    display: inline-flex;
+    align-items: center;
+
+    padding: 6px 16px;
+
+    border: 1.5px solid #516167;
+    border-radius: 999px;
+
+    background-color: #ffffff;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    color: #516167;
+}
+
+.status-pill--positive{
+    border-color: #28734a;
+    color: #28734a;
+}
+
+.status-pill--negative{
+    border-color: #ab0002;
+    color: #ab0002;
+}
+
+/*-------------------------------------- Tabelas --------------------------------------*/
+
+.table-wrap{
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table-clean{
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+}
+
+.table-clean th{
+    padding: 12px 16px;
+
+    border-bottom: 1px solid #d4d9dc;
+
+    text-align: left;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    color: #516167;
+}
+
+.table-clean td{
+    padding: 16px;
+
+    border-bottom: 1px solid #d4d9dc;
+
+    color: #263238;
+    font-size: 15px;
+}
+
+.table-clean tbody tr:last-child td{
+    border-bottom: none;
+}
+
+/*-------------------------------------- Faixa de título (páginas internas) --------------------------------------*/
+
+.page-header{
+    padding: 56px 40px;
+
+    background-color: #ab0002;
+}
+
+.page-header h1{
+    color: #ffffff;
+}
+
+.page-header p{
+    max-width: 640px;
+    margin-top: 10px;
+
+    color: #ffffff;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px){
+    .page-header{
+        padding: 32px 20px;
+    }
 }

@@ -1,9 +1,13 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { clearSession, getSession, subscribeSessionChange } from "../api";
 import logoNegativo from "../assets/logos/skillbridge-logo-negativo.svg";
 import iconePesquisa from "../assets/icons/icone-pesquisa.svg";
 import iconeUsuario from "../assets/icons/icone-usuario.svg";
+
+function navLinkClass({ isActive }: { isActive: boolean }) {
+  return isActive ? "active" : undefined;
+}
 
 export default function Header() {
   const navigate = useNavigate();
@@ -27,14 +31,17 @@ export default function Header() {
 
   return (
     <header>
-      <Link to="/">
-        <img className="icons" id="logo" src={logoNegativo} alt="Logo do SkillBridge" />
-      </Link>
+      <div className="header-start">
+        <Link to="/" className="header-logo-link">
+          <img className="icons" id="logo" src={logoNegativo} alt="" />
+          <span className="brand-name">SkillBridge</span>
+        </Link>
 
-      <form className="search-box" onSubmit={search}>
-        <img className="icons" id="pesquisa" src={iconePesquisa} alt="Ícone de pesquisa" />
-        <input type="search" name="q" placeholder="Pesquise aqui..." aria-label="Pesquisar vagas" />
-      </form>
+        <form className="search-box" onSubmit={search}>
+          <img className="icons" id="pesquisa" src={iconePesquisa} alt="" />
+          <input type="search" name="q" placeholder="Pesquise aqui..." aria-label="Pesquisar vagas" />
+        </form>
+      </div>
 
       {mostrarVoltar ? (
         <button type="button" className="header-voltar" onClick={voltar}>
@@ -42,22 +49,28 @@ export default function Header() {
         </button>
       ) : (
         <nav>
-          <Link to="/">HOME</Link>
-          <Link to="/edital">VAGAS</Link>
-          <Link to="/sobre-nos">SOBRE NÓS</Link>
-          {session?.usuario.tipo === "empresa" && <Link to="/talentos">TALENTOS</Link>}
-          {session?.usuario.tipo === "aluno" && <Link to="/candidaturas">CANDIDATURAS</Link>}
-          {session && <Link to="/perfil">MEU PERFIL</Link>}
+          <NavLink to="/" end className={navLinkClass}>HOME</NavLink>
+          <NavLink to="/edital" className={navLinkClass}>VAGAS</NavLink>
+          {session?.usuario.tipo === "empresa" && <NavLink to="/talentos" className={navLinkClass}>BANCO DE TALENTOS</NavLink>}
+          {session?.usuario.tipo === "aluno" && <NavLink to="/candidaturas" className={navLinkClass}>MINHAS CANDIDATURAS</NavLink>}
+          <NavLink to="/sobre-nos" className={navLinkClass}>SOBRE NÓS</NavLink>
         </nav>
       )}
 
-      {session ? (
-        <button className="header-logout" type="button" onClick={() => { clearSession(); navigate("/"); }}>Sair</button>
-      ) : (
-        <Link to="/login-aluno" aria-label="Entrar ou acessar perfil">
-          <img className="icons" id="perfil" src={iconeUsuario} alt="Ícone de perfil" />
+      <div className="header-actions">
+        {session ? (
+          <button className="header-logout" type="button" onClick={() => { clearSession(); navigate("/"); }}>Sair</button>
+        ) : (
+          <Link className="button-secundaryb" to="/login-aluno">Entrar</Link>
+        )}
+        <Link
+          to={session ? "/perfil" : "/login-aluno"}
+          className="avatar-circle"
+          aria-label={session ? "Meu perfil" : "Entrar ou acessar perfil"}
+        >
+          <img className="icons" id="perfil" src={iconeUsuario} alt="" />
         </Link>
-      )}
+      </div>
     </header>
   );
 }

@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import JobCard from "../components/JobCard";
 import { apiRequest, decodeJson, type Category, type Tag, type Vacancy } from "../api";
 import iconePesquisa from "../assets/icons/icone-pesquisa.svg";
+import "../styles/pages/edital.css";
 
 export default function Edital() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -66,33 +67,51 @@ export default function Edital() {
     setSearchParams(nextParams, { replace: true });
   }
 
+  function limparFiltros() {
+    setTipo("");
+    setTagsAtivas([]);
+    atualizarBusca("");
+  }
+
+  const filtroAtivo = Boolean(tipo || busca || tagsAtivas.length);
+
   return (
     <>
-      <section className="menu-edital">
-        <div className="topo-edital">
-          <div><p className="eyebrow-vaga">OPORTUNIDADES</p><h1>Edital de Vagas</h1></div>
+      <section className="page-header">
+        <h1>Edital de Vagas</h1>
+        <p>Encontre oportunidades compatíveis com a sua jornada acadêmica.</p>
+      </section>
 
-          <div className="acoes-edital">
+      <section className="menu-edital">
+        <div className="acoes-edital">
+          <div className="campo-edital campo-edital-busca">
+            <label htmlFor="busca-edital">Pesquisar</label>
             <div className="searchbox-edital">
               <img
                 className="icons"
                 id="pesquisa-edital"
                 src={iconePesquisa}
-                alt="Ícone de pesquisa"
+                alt=""
               />
-              <input type="search" placeholder="Pesquisar vagas..." aria-label="Pesquisar vagas" value={busca} onChange={(event) => atualizarBusca(event.target.value)} />
+              <input id="busca-edital" type="search" placeholder="Cargo, empresa ou competência" value={busca} onChange={(event) => atualizarBusca(event.target.value)} />
             </div>
+          </div>
 
-            <div className="filtros-edital">
-              <select aria-label="Filtrar por área" onChange={(event) => void filtrarCategoria(event.target.value)}>
-                <option value="">Todas as áreas</option>
+          <div className="filtros-edital">
+            <div className="campo-edital">
+              <label htmlFor="categoria-edital">Categoria</label>
+              <select id="categoria-edital" onChange={(event) => void filtrarCategoria(event.target.value)}>
+                <option value="">Todas</option>
                 {categorias.map((categoria) => (
                   <option key={categoria.id} value={categoria.id}>{categoria.nome}</option>
                 ))}
               </select>
+            </div>
 
-              <select aria-label="Filtrar por tipo" value={tipo} onChange={(event) => setTipo(event.target.value)}>
-                <option value="">Todos os tipos</option>
+            <div className="campo-edital">
+              <label htmlFor="tipo-edital">Tipo</label>
+              <select id="tipo-edital" value={tipo} onChange={(event) => setTipo(event.target.value)}>
+                <option value="">Todos</option>
                 {tipos.map((item) => (
                   <option key={item}>{item}</option>
                 ))}
@@ -104,6 +123,7 @@ export default function Edital() {
         <div className="linha-edital" />
 
         <div className="tags-edital" aria-label="Filtrar por competência">
+          <span className="tags-edital-label">COMPETÊNCIAS</span>
           {tags.map((tag) => (
             <button key={tag.id} type="button" aria-pressed={tagsAtivas.includes(tag.id)} onClick={() => toggleTag(tag.id)}>
               {tag.nome}
@@ -113,12 +133,17 @@ export default function Edital() {
       </section>
 
       <section className="results-heading">
-        <p>{vagasFiltradas.length} {vagasFiltradas.length === 1 ? "vaga encontrada" : "vagas encontradas"}</p>
+        <p className="results-count">{vagasFiltradas.length} {vagasFiltradas.length === 1 ? "vaga encontrada" : "vagas encontradas"}</p>
         {mensagem && <p className="status-message" role="alert">{mensagem}</p>}
       </section>
       <section className="grid-vagas">
         {carregando && <p className="empty-state">Carregando oportunidades...</p>}
-        {!carregando && vagasFiltradas.length === 0 && !mensagem && <p className="empty-state">Nenhuma vaga corresponde aos filtros.</p>}
+        {!carregando && vagasFiltradas.length === 0 && !mensagem && (
+          <div className="empty-state">
+            <p>Nenhuma vaga corresponde aos filtros.</p>
+            {filtroAtivo && <button type="button" className="button-secundary" onClick={limparFiltros}>Limpar filtros</button>}
+          </div>
+        )}
         {!carregando && vagasFiltradas.map((vaga) => <JobCard key={vaga.id} vaga={vaga} />)}
       </section>
     </>

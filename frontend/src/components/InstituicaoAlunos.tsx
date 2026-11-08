@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { apiRequest, decodeJson, type Course, type InstitutionStudent } from "../api";
+import "../styles/candidatos-vaga.css";
 
 const periodoLabels: Record<string, string> = { m: "Manhã", t: "Tarde", n: "Noite" };
 
@@ -26,9 +27,9 @@ export default function InstituicaoAlunos() {
 
   return (
     <article className="profile-panel">
-      <h2>Meus alunos</h2>
-      <div className="data-form">
-        <label htmlFor="filtro-curso">Curso</label>
+      <h2>Alunos</h2>
+      <div className="campo-form campo-filtro">
+        <label htmlFor="filtro-curso">Filtrar por curso</label>
         <select id="filtro-curso" value={cursoId} onChange={(event) => setCursoId(event.target.value)}>
           <option value="">Todos os cursos</option>
           {cursos.map((curso) => <option key={curso.id} value={curso.id}>{curso.nome}</option>)}
@@ -37,18 +38,36 @@ export default function InstituicaoAlunos() {
       {mensagem && <p className="status-message" role="alert">{mensagem}</p>}
       {carregando && <p className="empty-state">Carregando alunos...</p>}
       {!carregando && !mensagem && !alunos.length && <p className="empty-state">Nenhum aluno encontrado.</p>}
-      {!carregando && alunos.map((aluno) => {
-        const curso = decodeJson(aluno.curso);
-        const periodo = periodoLabels[aluno.periodo?.toLowerCase()] || aluno.periodo;
-        return (
-          <div className="application-row" key={aluno.id}>
-            <h3>{aluno.nome}</h3>
-            <p>RA {aluno.ra} · {periodo}</p>
-            <p>{curso.nome}</p>
-            <p>{aluno.contato || "Sem contato informado."}</p>
-          </div>
-        );
-      })}
+      {!carregando && alunos.length > 0 && (
+        <div className="table-wrap">
+          <table className="table-clean">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>RA</th>
+                <th>Curso</th>
+                <th>Horário</th>
+                <th>Contato</th>
+              </tr>
+            </thead>
+            <tbody>
+              {alunos.map((aluno) => {
+                const curso = decodeJson(aluno.curso);
+                const periodo = periodoLabels[aluno.periodo?.toLowerCase()] || aluno.periodo;
+                return (
+                  <tr key={aluno.id}>
+                    <td className="candidato-nome">{aluno.nome}</td>
+                    <td>{aluno.ra}</td>
+                    <td>{curso.nome}</td>
+                    <td>{periodo}</td>
+                    <td>{aluno.contato || "Sem contato informado."}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
     </article>
   );
 }
