@@ -24,11 +24,13 @@ export const homeCards: HomeCard[] = [
     titulo: "ALUNO",
     texto:
       "Você aluno do Centro Paula Souza tem oportunidades de encontrar vagas compatíveis com a sua jornada acadêmica, por meio do nosso edital de vagas com filtragem eficaz para o que você procura.",
+    botao: { texto: "Cadastrar como aluno", href: "/cadastro-aluno" },
   },
   {
     titulo: "EMPRESA",
     texto:
       "Você empresa que deseja contratar nossos alunos promissores, a plataforma SkillBridge tem uma rápida, simples e intuitiva criação de vagas além de disponibilizar um grande banco de talentos para procurar o aluno ideal para a sua vaga!",
+    botao: { texto: "Cadastrar empresa", href: "/cadastro-empresa" },
   },
   {
     titulo: "ACESSE NOSSA PLATAFORMA",
