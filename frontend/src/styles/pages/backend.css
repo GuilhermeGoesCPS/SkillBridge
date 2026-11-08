@@ -1,15 +1,17 @@
 .status-message {
-  padding: 12px 14px;
-  border-left: 4px solid #ab0002;
-  background: #fff1f1;
-  color: #512222;
+  padding: 12px 18px;
+  border: 1.5px solid #ab0002;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #ab0002;
   font-size: 15px;
+  font-weight: 700;
 }
 
 .status-message[data-type="success"] {
   border-color: #28734a;
-  background: #edf8f0;
-  color: #17472c;
+  background: #ffffff;
+  color: #28734a;
 }
 
 .data-page {
@@ -90,11 +92,12 @@
 
 .tag-list span,
 .tag-option {
-  padding: 7px 10px;
-  border-radius: 4px;
-  background: #edf2ef;
-  color: #315344;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: #f2f2f2;
+  color: #516167;
   font-size: 13px;
+  font-weight: 700;
 }
 
 .detail-panel > .button-primary,
@@ -124,16 +127,29 @@
 .data-form select,
 .data-form textarea {
   width: 100%;
-  padding: 12px 14px;
-  border: 1px solid #c5c5c5;
-  border-radius: 6px;
+  min-height: 50px;
+  padding: 12px 16px;
+  border: 1px solid #d4d9dc;
+  border-radius: 10px;
   background: #ffffff;
   color: #263238;
   font-size: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.auth-form select:focus,
+.auth-form textarea:focus,
+.data-form input:focus,
+.data-form select:focus,
+.data-form textarea:focus {
+  outline: none;
+  border-color: #ab0002;
+  box-shadow: 0 0 0 3px rgba(171,0,2,0.15);
 }
 
 .auth-form textarea,
 .data-form textarea {
+  min-height: 110px;
   resize: vertical;
 }
 
@@ -202,8 +218,12 @@
 
 .empty-state {
   grid-column: 1 / -1;
-  padding: 32px 20px;
+  padding: 40px 20px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
   color: #516167;
+  font-weight: 700;
   text-align: center;
 }
 
@@ -223,12 +243,14 @@
 }
 
 .header-logout {
-  padding: 8px 12px;
-  border: 1px solid #ffffff;
-  border-radius: 4px;
+  padding: 8px 16px;
+  border: 1.5px solid #ffffff;
+  border-radius: 999px;
   background: transparent;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: inherit;
   cursor: pointer;
 }
 

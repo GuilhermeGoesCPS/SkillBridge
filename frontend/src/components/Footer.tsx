@@ -4,7 +4,8 @@ export default function Footer() {
   return (
     <footer>
       <div className="footer-logo">
-        <img src={logoNegativo} alt="Logo do SkillBridge" />
+        <img src={logoNegativo} alt="" />
+        <span className="brand-name">SkillBridge</span>
       </div>
 
       <div className="sobre">

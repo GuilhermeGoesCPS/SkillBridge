@@ -23,3 +23,21 @@ body h1 {
 body h2 {
     font-size: 28px;
 }
+
+/*-------- Foco visível (acessibilidade) --------*/
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+    outline: 2px solid #ab0002;
+    outline-offset: 2px;
+}
+
+header a:focus-visible,
+header button:focus-visible,
+footer a:focus-visible {
+    outline-color: #ffffff;
+}
