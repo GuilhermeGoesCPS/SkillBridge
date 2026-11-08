@@ -37,23 +37,29 @@ export default function Talentos() {
 
   if (session?.usuario.tipo !== "empresa") {
     return (
-      <section className="data-page">
-        <article className="profile-panel talent-search">
-          <p className="eyebrow-vaga">BANCO DE TALENTOS</p>
-          <h1>Encontre estudantes</h1>
-          <p>{session ? "A busca de talentos está disponível para empresas." : "Entre com uma conta de empresa para buscar talentos."}</p>
-          {!session && <Link className="button-primary" to="/login-empresa">Entrar como empresa</Link>}
-        </article>
-      </section>
+      <>
+        <section className="page-header">
+          <h1>Banco de Talentos</h1>
+          <p>Encontre o aluno ideal para a sua vaga filtrando por competências.</p>
+        </section>
+        <section className="data-page">
+          <article className="profile-panel talent-search">
+            <p>{session ? "A busca de talentos está disponível para empresas." : "Entre com uma conta de empresa para buscar talentos."}</p>
+            {!session && <Link className="button-primary" to="/login-empresa">Entrar como empresa</Link>}
+          </article>
+        </section>
+      </>
     );
   }
 
   return (
-    <section className="data-page">
+    <>
+      <section className="page-header">
+        <h1>Banco de Talentos</h1>
+        <p>Encontre o aluno ideal para a sua vaga filtrando por competências.</p>
+      </section>
+      <section className="data-page">
       <article className="profile-panel talent-search">
-        <p className="eyebrow-vaga">BANCO DE TALENTOS</p>
-        <h1>Encontre estudantes</h1>
-        <p>Filtre por uma ou mais competências.</p>
         <div className="tag-select-list">
           {tags.map((tag) => (
             <label className="tag-option" key={tag.id}>
@@ -64,7 +70,7 @@ export default function Talentos() {
         </div>
         {mensagem && <p className="status-message" role="alert">{mensagem}</p>}
       </article>
-      <section className="talent-list" aria-live="polite">
+      <section className="talent-list grid-vagas" aria-live="polite">
         {carregando && <p className="empty-state">Buscando talentos...</p>}
         {!carregando && !selecionadas.length && <p className="empty-state">Selecione ao menos uma competência para buscar talentos.</p>}
         {!carregando && selecionadas.length > 0 && !alunos.length && !mensagem && <p className="empty-state">Nenhum aluno encontrado com essas competências.</p>}
@@ -76,8 +82,13 @@ export default function Talentos() {
           const periodo = { m: "Manhã", t: "Tarde", n: "Noite" }[aluno.periodo.toLowerCase()] || aluno.periodo;
           return (
             <article className="talent-row" key={aluno.id}>
-              <p className="eyebrow-vaga">{curso.nome}</p>
-              <h2>{usuario.nome}</h2>
+              <div className="empresa-vaga-linha">
+                <span className="empresa-avatar" aria-hidden="true">{usuario.nome ? usuario.nome.charAt(0).toUpperCase() : "?"}</span>
+                <div>
+                  <h2>{usuario.nome}</h2>
+                  <p className="eyebrow-vaga">{curso.nome}</p>
+                </div>
+              </div>
               <p>{instituicao.nome} · {periodo}</p>
               <p>{usuario.descricao || "Sem descrição informada."}</p>
               <div className="tag-list">{competencias.map((tag) => <span key={tag.id}>{tag.nome}</span>)}</div>
@@ -85,6 +96,7 @@ export default function Talentos() {
           );
         })}
       </section>
-    </section>
+      </section>
+    </>
   );
 }

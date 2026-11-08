@@ -130,67 +130,87 @@ export default function Perfil() {
     }
   }
 
-  if (carregando) return <section className="data-page"><p>Carregando perfil...</p></section>;
+  if (carregando) return <section className="data-page"><p className="status-message" data-type="loading" role="status">Carregando perfil...</p></section>;
   if (!usuario) return <section className="data-page"><p className="status-message" role="alert">{mensagem}</p></section>;
 
   const instituicaoUsuario = usuario.instituicao;
   return (
-    <section className="data-page profile-page">
+    <>
+      <section className="profile-header">
+        <div className="profile-avatar">
+          <img src={iconeUsuario} alt="Foto de perfil" />
+        </div>
+        <div className="profile-top-info">
+          <p className="eyebrow-vaga">{usuario.tipo}</p>
+          <h1>Meu perfil</h1>
+        </div>
+        <button className="button-primaryb" type="submit" form="form-perfil" disabled={salvando}>
+          {salvando ? "Salvando..." : "Salvar alterações"}
+        </button>
+      </section>
+
+      <section className="data-page profile-page">
       {mensagem && <p className="status-message" role="status">{mensagem}</p>}
       <article className="profile-panel">
-        <div className="profile-top">
-          <div className="profile-avatar">
-            <img src={iconeUsuario} alt="Foto de perfil" />
-          </div>
-          <div className="profile-top-info">
-            <p className="eyebrow-vaga">{usuario.tipo}</p>
-            <h1>Meu perfil</h1>
-          </div>
-          <button className="button-primary" type="submit" form="form-perfil" disabled={salvando}>
-            {salvando ? "Salvando..." : "Salvar alterações"}
-          </button>
-        </div>
         <form className="data-form" id="form-perfil" onSubmit={saveProfile}>
-          <label htmlFor="nome">Nome</label>
-          <input id="nome" name="nome" defaultValue={usuario.nome} maxLength={50} required />
-          <label htmlFor="email">E-mail</label>
-          <input id="email" name="email" type="email" defaultValue={usuario.email} required />
-          <label htmlFor="endereco">Endereço</label>
-          <input id="endereco" name="endereco" defaultValue={usuario.endereco} required />
+          <div className="campo-form">
+            <label htmlFor="nome">Nome</label>
+            <input id="nome" name="nome" defaultValue={usuario.nome} maxLength={50} required />
+          </div>
+          <div className="campo-form">
+            <label htmlFor="email">E-mail</label>
+            <input id="email" name="email" type="email" defaultValue={usuario.email} required />
+          </div>
+          <div className="campo-form">
+            <label htmlFor="endereco">Endereço</label>
+            <input id="endereco" name="endereco" defaultValue={usuario.endereco} required />
+          </div>
           {usuario.tipo === "aluno" && (
             <fieldset className="profile-fields">
               <legend>Unidade, Curso e Horário</legend>
-              <label htmlFor="ra">RA</label>
-              <input id="ra" name="ra" defaultValue={usuario.perfil.ra} pattern="[0-9]{13}" minLength={13} maxLength={13} required />
-              <label htmlFor="periodo">Horário</label>
-              <select id="periodo" name="periodo" defaultValue={usuario.perfil.periodo} required>
-                <option value="m">Manhã</option>
-                <option value="t">Tarde</option>
-                <option value="n">Noite</option>
-              </select>
-              <label htmlFor="cursoId">Curso</label>
-              <select id="cursoId" name="cursoId" defaultValue={usuario.curso?.id} required>
-                {cursos.map((curso) => <option key={curso.id} value={curso.id}>{curso.nome}</option>)}
-              </select>
-              <label htmlFor="instituicaoId">Unidade</label>
-              <select id="instituicaoId" name="instituicaoId" defaultValue={instituicaoUsuario?.id} required>
-                {instituicoes.map((institution) => {
-                  const organization = decodeJson(institution.usuario);
-                  return <option key={institution.id} value={institution.id}>{organization.nome}</option>;
-                })}
-              </select>
+              <div className="campo-form">
+                <label htmlFor="ra">RA</label>
+                <input id="ra" name="ra" defaultValue={usuario.perfil.ra} pattern="[0-9]{13}" minLength={13} maxLength={13} required />
+              </div>
+              <div className="campo-form">
+                <label htmlFor="periodo">Horário</label>
+                <select id="periodo" name="periodo" defaultValue={usuario.perfil.periodo} required>
+                  <option value="m">Manhã</option>
+                  <option value="t">Tarde</option>
+                  <option value="n">Noite</option>
+                </select>
+              </div>
+              <div className="campo-form">
+                <label htmlFor="cursoId">Curso</label>
+                <select id="cursoId" name="cursoId" defaultValue={usuario.curso?.id} required>
+                  {cursos.map((curso) => <option key={curso.id} value={curso.id}>{curso.nome}</option>)}
+                </select>
+              </div>
+              <div className="campo-form">
+                <label htmlFor="instituicaoId">Unidade</label>
+                <select id="instituicaoId" name="instituicaoId" defaultValue={instituicaoUsuario?.id} required>
+                  {instituicoes.map((institution) => {
+                    const organization = decodeJson(institution.usuario);
+                    return <option key={institution.id} value={institution.id}>{organization.nome}</option>;
+                  })}
+                </select>
+              </div>
             </fieldset>
           )}
           {(usuario.tipo === "empresa" || usuario.tipo === "instituicao") && (
-            <>
+            <div className="campo-form">
               <label htmlFor="cnpj">CNPJ</label>
               <input id="cnpj" name="cnpj" defaultValue={usuario.perfil.cnpj} pattern="[0-9]{14}" minLength={14} maxLength={14} required />
-            </>
+            </div>
           )}
-          <label htmlFor="descricao">{usuario.tipo === "aluno" ? "Sobre Mim" : "Visão Geral"}</label>
-          <textarea id="descricao" name="descricao" rows={4} defaultValue={usuario.descricao || ""} />
-          <label htmlFor="contato">Contato</label>
-          <input id="contato" name="contato" defaultValue={usuario.contato || ""} />
+          <div className="campo-form campo-form--full">
+            <label htmlFor="descricao">{usuario.tipo === "aluno" ? "Sobre Mim" : "Visão Geral"}</label>
+            <textarea id="descricao" name="descricao" rows={4} defaultValue={usuario.descricao || ""} />
+          </div>
+          <div className="campo-form">
+            <label htmlFor="contato">Contato</label>
+            <input id="contato" name="contato" defaultValue={usuario.contato || ""} />
+          </div>
         </form>
       </article>
 
@@ -199,18 +219,30 @@ export default function Perfil() {
           <article className="profile-panel">
             <h2>Publicar uma vaga</h2>
             <form className="data-form" onSubmit={createVacancy}>
-              <label htmlFor="tipo-vaga">Tipo</label>
-              <input id="tipo-vaga" name="tipo" defaultValue="Estágio" maxLength={20} required />
-              <label htmlFor="descricao-vaga">Descrição</label>
-              <textarea id="descricao-vaga" name="descricao" rows={4} />
-              <label htmlFor="salario">Salário mensal (R$)</label>
-              <input id="salario" name="salario" type="number" min="0" step="0.01" required />
-              <label htmlFor="horarioInicio">Início</label>
-              <input id="horarioInicio" name="horarioInicio" type="time" defaultValue="09:00" required />
-              <label htmlFor="horarioTermino">Término</label>
-              <input id="horarioTermino" name="horarioTermino" type="time" defaultValue="15:00" required />
-              <label htmlFor="numeroDeVagas">Número de vagas</label>
-              <input id="numeroDeVagas" name="numeroDeVagas" type="number" min="1" step="1" />
+              <div className="campo-form">
+                <label htmlFor="tipo-vaga">Tipo</label>
+                <input id="tipo-vaga" name="tipo" defaultValue="Estágio" maxLength={20} required />
+              </div>
+              <div className="campo-form campo-form--full">
+                <label htmlFor="descricao-vaga">Descrição</label>
+                <textarea id="descricao-vaga" name="descricao" rows={4} />
+              </div>
+              <div className="campo-form">
+                <label htmlFor="salario">Salário mensal (R$)</label>
+                <input id="salario" name="salario" type="number" min="0" step="0.01" required />
+              </div>
+              <div className="campo-form">
+                <label htmlFor="horarioInicio">Início</label>
+                <input id="horarioInicio" name="horarioInicio" type="time" defaultValue="09:00" required />
+              </div>
+              <div className="campo-form">
+                <label htmlFor="horarioTermino">Término</label>
+                <input id="horarioTermino" name="horarioTermino" type="time" defaultValue="15:00" required />
+              </div>
+              <div className="campo-form">
+                <label htmlFor="numeroDeVagas">Número de vagas</label>
+                <input id="numeroDeVagas" name="numeroDeVagas" type="number" min="1" step="1" />
+              </div>
               <fieldset className="profile-fields">
                 <legend>Competências</legend>
                 <div className="tag-select-list">
@@ -241,6 +273,7 @@ export default function Perfil() {
           <InstituicaoCandidaturas />
         </>
       )}
-    </section>
+      </section>
+    </>
   );
 }

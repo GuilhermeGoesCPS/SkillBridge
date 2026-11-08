@@ -11,9 +11,15 @@ const periodoLabels: Record<string, string> = { m: "Manhã", t: "Tarde", n: "Noi
 type Situacao = "pendente" | "aceito" | "recusado";
 
 const situacaoLabels: Record<Situacao, string> = {
-  pendente: "Pendente",
+  pendente: "Em análise",
   aceito: "Aceito",
   recusado: "Recusado",
+};
+
+const situacaoPillClasse: Record<Situacao, string> = {
+  pendente: "status-pill",
+  aceito: "status-pill status-pill--positive",
+  recusado: "status-pill status-pill--negative",
 };
 
 function situacaoDe(aceito: boolean | number | null): Situacao {
@@ -61,31 +67,48 @@ export default function CandidatosVaga({ vagaId }: CandidatosVagaProps) {
   }
 
   return (
-    <div className="candidatos-vaga">
+    <div className="table-wrap">
       {mensagem && <p className="status-message" role="alert">{mensagem}</p>}
-      {candidatos.map((candidato) => {
-        const aluno = decodeJson(candidato.aluno);
-        const curso = decodeJson(aluno.curso);
-        const periodo = periodoLabels[aluno.periodo?.toLowerCase()] || aluno.periodo;
-        const situacao = situacaoDe(candidato.aceito);
-        const atualizando = atualizandoId === candidato.id;
-        return (
-          <div className="candidato-row" key={candidato.id}>
-            <p className="candidato-nome">{aluno.nome}</p>
-            <p>{curso.nome} · {periodo}</p>
-            <p>{aluno.contato || "Sem contato informado."}</p>
-            <p className={`candidato-situacao candidato-situacao--${situacao}`}>{situacaoLabels[situacao]}</p>
-            <div className="candidato-acoes">
-              <button type="button" className="button-primary" disabled={atualizando} onClick={() => responder(candidato.id, true)}>
-                Aceitar
-              </button>
-              <button type="button" className="button-destructive" disabled={atualizando} onClick={() => responder(candidato.id, false)}>
-                Recusar
-              </button>
-            </div>
-          </div>
-        );
-      })}
+      <table className="table-clean">
+        <thead>
+          <tr>
+            <th>Aluno</th>
+            <th>Curso</th>
+            <th>Horário</th>
+            <th>Contato</th>
+            <th>Status</th>
+            <th aria-hidden="true"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {candidatos.map((candidato) => {
+            const aluno = decodeJson(candidato.aluno);
+            const curso = decodeJson(aluno.curso);
+            const periodo = periodoLabels[aluno.periodo?.toLowerCase()] || aluno.periodo;
+            const situacao = situacaoDe(candidato.aceito);
+            const atualizando = atualizandoId === candidato.id;
+            return (
+              <tr key={candidato.id}>
+                <td className="candidato-nome">{aluno.nome}</td>
+                <td>{curso.nome}</td>
+                <td>{periodo}</td>
+                <td>{aluno.contato || "Sem contato informado."}</td>
+                <td><span className={situacaoPillClasse[situacao]}>{situacaoLabels[situacao]}</span></td>
+                <td>
+                  <div className="candidato-acoes">
+                    <button type="button" className="button-primary" disabled={atualizando} onClick={() => responder(candidato.id, true)}>
+                      Aceitar
+                    </button>
+                    <button type="button" className="button-destructive" disabled={atualizando} onClick={() => responder(candidato.id, false)}>
+                      Recusar
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }

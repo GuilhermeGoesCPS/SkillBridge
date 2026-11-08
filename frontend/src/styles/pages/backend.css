@@ -121,7 +121,6 @@
 
 .data-form label,
 .profile-fields legend {
-  align-self: end;
   color: #516167;
   font-size: 14px;
   font-weight: 700;
@@ -169,7 +168,7 @@
   resize: vertical;
 }
 
-.data-form textarea,
+.data-form .campo-form--full,
 .data-form fieldset,
 .data-form button {
   grid-column: 1 / -1;
@@ -189,6 +188,7 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px 18px;
   padding: 18px;
+  border-radius: 10px;
   border: 1px solid #d4d9dc;
 }
 
@@ -196,15 +196,29 @@
   padding: 0 8px;
 }
 
+.profile-fields .tag-select-list {
+  grid-column: 1 / -1;
+}
+
 .tag-option {
   display: inline-flex;
   align-items: center;
   gap: 7px;
   cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 .tag-option input {
   accent-color: #ab0002;
+}
+
+.tag-option:has(input:checked) {
+  background-color: #ab0002;
+  color: #ffffff;
+}
+
+.tag-option:has(input:checked) input {
+  accent-color: #ffffff;
 }
 
 .application-row,
@@ -283,7 +297,6 @@
   width: 100%;
   max-width: none;
   align-items: stretch;
-  border-radius: 8px;
 }
 
 .grid-vagas .content-vaga {
@@ -297,6 +310,81 @@
 
 .profile-page > .status-message {
   margin-bottom: 18px;
+}
+
+/*-------------------------------------- Cabeçalho do Perfil (faixa vermelha) --------------------------------------*/
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 40px;
+  background-color: #ab0002;
+}
+
+.profile-header .eyebrow-vaga {
+  color: #ffffff;
+}
+
+.profile-header h1 {
+  margin: 4px 0 0;
+  color: #ffffff;
+}
+
+.profile-top-info {
+  flex: 1;
+  min-width: 200px;
+}
+
+.profile-top button {
+  flex-shrink: 0;
+}
+
+.profile-avatar {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+  background-color: #ab0002;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-avatar img {
+  width: 40px;
+}
+
+/*-------------------------------------- Banco de talentos (cards) --------------------------------------*/
+
+.talent-row {
+  border-radius: 16px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.talent-row:hover {
+  box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
+}
+
+.talent-row .empresa-vaga-linha {
+  margin-bottom: 10px;
+}
+
+.talent-row h2 {
+  margin: 0;
+  color: #ab0002;
+  font-size: 20px;
+}
+
+/*-------------------------------------- Filtro compacto (ex.: Instituição > Alunos) --------------------------------------*/
+
+.campo-filtro {
+  max-width: 280px;
+  margin-bottom: 20px;
 }
 
 @media (max-width: 768px) {
