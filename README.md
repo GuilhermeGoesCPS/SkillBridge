@@ -2,10 +2,10 @@
 
 ## Integrantes do projeto:
 
-Alexsander de Santana.....................RA: 2171392611001 <br>
+Alexsander de Santana.......................RA: 2171392611001 <br>
 Antônio Davi dos Santos da Silva...RA: 2171392611040 <br>
-Beatriz Soares Santos da Costa.......RA: 2171392611034 <br>
-Guilherme dos Santos Góes..........RA: 2171392611004 <br>
+Beatriz Soares Santos da Costa........RA: 2171392611034 <br>
+Guilherme dos Santos Góes..............RA: 2171392611004 <br>
 Miguel Rienzi Muniz................RA: 2171392611043 <br>
 
 ## Requisitos
