@@ -1,5 +1,13 @@
 # SkillBridge
 
+## Integrantes do projeto:
+
+Alexsander de Santana - RA: 2171392611001
+Antônio Davi dos Santos da Silva - RA: 2171392611040
+Beatriz Soares Santos da Costa - RA: 2171392611034 
+Guilherme dos Santos Góes - RA: 2171392611004 
+Miguel Rienzi Muniz - RA: 2171392611043 
+
 ## Requisitos
 
 - Node.js 20.19+ (ou 22.12+) e npm.
